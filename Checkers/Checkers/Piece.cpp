@@ -12,3 +12,8 @@ void Piece::makeDoublePiece()
 {
 	isDoublePiece = true;
 }
+
+bool Piece::getIsDoublePiece()
+{
+	return isDoublePiece;
+}

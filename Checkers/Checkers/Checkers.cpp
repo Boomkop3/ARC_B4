@@ -5,15 +5,11 @@
 int main()
 {
     BoardState b;
-    b.printBoard();
+    //b.printBoard();
     BoardHelper h;
     BoardPos bp = BoardPos(0, 0);
-    h.RemovePiece(bp, b);
-    bp = BoardPos(2, 1);
-    h.RemovePiece(bp, b);
-    bp = BoardPos(2, 2);
-    h.RemovePiece(bp, b);
-    bp = BoardPos(7, 7);
+    h.MakeDoublePiece(bp, b);    
+    b.printBoard();
     h.RemovePiece(bp, b);
     b.printBoard();
 }

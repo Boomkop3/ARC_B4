@@ -17,7 +17,6 @@ std::vector<std::vector<BoardPos>> BoardState::getBoardPositions()
 
 std::vector<Piece> BoardState::getPieces()
 {
-	
 	return pieces;
 }
 
@@ -123,10 +122,23 @@ void BoardState::printBoard()
 		int pos2d = (p.position.getY() * 8) + p.position.getX();
 		if (p.color == Piece::Black)
 		{
-			board[pos2d] = 'b';
+			if (p.getIsDoublePiece())
+			{
+				board[pos2d] = 'B';
+			}
+			else {
+				board[pos2d] = 'b';
+			}
+			
 		}
 		else {
-			board[pos2d] = 'w';
+			if (p.getIsDoublePiece()) {
+				board[pos2d] = 'W';
+			}
+			else {
+				board[pos2d] = 'w';
+			}
+			
 		}
 	}
 

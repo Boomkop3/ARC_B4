@@ -23,6 +23,20 @@ void BoardHelper::RemovePiece(BoardPos& position, BoardState& state)
 void BoardHelper::MakeDoublePiece(BoardPos& position, BoardState& state)
 {
 	//make double piece logic
+	std::vector<Piece> tempPieces = state.getPieces();
+	int count = 0;
+	for (Piece p : tempPieces) {
+		if ((p.position.getX() == position.getX()) && (p.position.getY() == position.getY()))
+		{
+			p.makeDoublePiece();
+			tempPieces.push_back(p);
+			tempPieces.erase(tempPieces.begin() + count);
+			state.setPieces(tempPieces);
+			state.updatePiecesOnBoardPositions();
+			return;
+		}
+		count++;
+	}
 }
 
 bool BoardHelper::checkIfLegalMove(BoardPos& originalPos, std::vector<BoardPos>& movePositions)
