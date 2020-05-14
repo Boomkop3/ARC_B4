@@ -20,8 +20,8 @@ glm::mat4 GameCamera::getMatrix()
 		glm::vec3(camX, 0, camZ) + viewPosOrTargetPos,
 		glm::vec3(0,0,0),
 		glm::vec3(0.0f, 1.0f, 0.0f));
-	viewMat = glm::translate(viewMat, glm::vec3(this->translation.x, this->translation.y, this->translation.z));
 	viewMat = glm::rotate(viewMat, (float)rotX, glm::vec3(1, 0, 0));
+	viewMat = glm::translate(viewMat, glm::vec3(this->translation.x, this->translation.y, this->translation.z));
 	return viewMat;
 }
 
