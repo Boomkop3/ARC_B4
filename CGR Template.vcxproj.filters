@@ -159,6 +159,12 @@
     <ClCompile Include="imgui_widgets.cpp">
       <Filter>Source Files\utils\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="imgui_impl_glfw.cpp">
+      <Filter>Source Files\utils\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_opengl3.cpp">
+      <Filter>Source Files\utils\imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cuboid.h">
@@ -237,6 +243,12 @@
       <Filter>Header Files\utils\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imstb_truetype.h">
+      <Filter>Header Files\utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_glfw.h">
+      <Filter>Header Files\utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_opengl3.h">
       <Filter>Header Files\utils\imgui</Filter>
     </ClInclude>
   </ItemGroup>

@@ -23,6 +23,10 @@
 #include "GameCamera.h"
 #include "CheckerBoardGL.h"
 
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 #define VSYNC_ON 1
 #define VSYNC_OFF 0
 
@@ -41,8 +45,10 @@ GLFWwindow* gWindow = NULL;
 GameCamera* gCamera = NULL;
 
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode);
-void showFPS(GLFWwindow* window);
 void update();
+void imGuiUpdate();
+void initImGui();
+void destroyImGui();
 bool initOpenGL();
 bool init();
 
@@ -61,7 +67,7 @@ static void GLCheckError() {
 		std::cout << "[OpenGL Error] (" << error << ")" << std::endl;
 	}
 }
-
+bool my_tool_active = false;
 int main(void)
 {
 	std::cout << "Initialize program" << std::endl;
@@ -73,16 +79,60 @@ int main(void)
 
 	create_checkerboard();
 
+	//Setup IMGUI
+	initImGui();
+
+	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+
+
 	std::cout << "Main program loop" << std::endl;
 	while (!glfwWindowShouldClose(gWindow))
 	{
+
 		update();
 		draw();
+		imGuiUpdate();
 		glfwSwapBuffers(gWindow);
 		glfwPollEvents();
+
+		
 	}
+	destroyImGui();
 	glfwTerminate();
 	return 0;
+}
+
+bool vsync = true;
+void imGuiUpdate() {
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+	
+	glfwSwapInterval(vsync ? VSYNC_ON : VSYNC_OFF);
+
+	ImGui::Text("Dit is imgui! \n \nVia de GUI kun je vsync nu aan- of uitzetten. \n\nMvg, \n Dustin");
+	ImGui::Text("\n\nKnopjes!");
+	ImGui::Checkbox("Vsync", &vsync);
+	ImGui::Text("Applicatie gemiddelde %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void initImGui() {
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(gWindow, true);
+	ImGui_ImplOpenGL3_Init((char*)glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
+}
+
+void destroyImGui() {
+	ImGui_ImplGlfw_Shutdown();
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui::DestroyContext();
 }
 
 bool initOpenGL() {
@@ -162,6 +212,8 @@ bool init()
 
 	stbi_image_free(data);
 	gCamera = new GameCamera(gWindow);
+
+
 	return true;
 }
 
@@ -169,32 +221,6 @@ void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	// reserved for later use
 }
-
-void showFPS(GLFWwindow* window)
-{
-	static double previousSeconds = .0;
-	static int frameCount = 0;
-	double elapsedSeconds;
-	double currentSeconds = glfwGetTime();
-	elapsedSeconds = currentSeconds - previousSeconds;
-
-	if (elapsedSeconds > .25)
-	{
-		previousSeconds = currentSeconds;
-		double fps = (double)frameCount / elapsedSeconds;
-		double msPerFrame = 1000. / fps;
-		std::ostringstream outs;
-		outs.precision(3);
-		outs << std::fixed
-			<< "App" << "    "
-			<< " FPS: " << fps << "    "
-			<< " Frame Time: " << msPerFrame << " (ms)";
-		glfwSetWindowTitle(window, outs.str().c_str());
-		frameCount = 0;
-	}
-	frameCount++;
-}
-
 
 static const double updatesPerSecond = 100.;
 static double timer = 1/updatesPerSecond;
@@ -206,7 +232,6 @@ void update()
 	double deltaTime = currentFrameTime - lastFrameTime;
 	lastFrameTime = currentFrameTime;
 
-	showFPS(gWindow);
 	timer -= deltaTime;
 	if (timer <= 0) {
 		timer = 1./updatesPerSecond;
