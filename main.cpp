@@ -217,8 +217,8 @@ void update()
 std::shared_ptr<std::vector<tigl::Vertex>> buffer = std::make_shared<std::vector<tigl::Vertex>>();
 std::shared_ptr<std::vector<glm::vec3>> vertices_in = std::make_shared<std::vector<glm::vec3>>();;
 std::shared_ptr<std::vector<glm::vec3>> indices_in = std::make_shared<std::vector<glm::vec3>>();;
-
 std::shared_ptr<CheckerBoardGL> checkerBoardGL;
+
 void create_checkerboard() {
 	checkerBoardGL = std::make_shared<CheckerBoardGL>(buffer, vertices_in, indices_in);
 	checkerBoardGL->create_board();
@@ -229,9 +229,9 @@ void draw() {
 	glfwGetWindowSize(gWindow, &width, &height);
 	glViewport(0, 0, width, height);
 
-	//glm::mat4 projection = glm::perspective(glm::radians(45.f), width / (float)height, .1f, 100.f);
+	glm::mat4 projection = glm::perspective(glm::radians(45.f), width / (float)height, .1f, 100.f);
 
-	//tigl::shader->setProjectionMatrix(projection);
+	tigl::shader->setProjectionMatrix(projection);
 	tigl::shader->setViewMatrix(gCamera->getMatrix());
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

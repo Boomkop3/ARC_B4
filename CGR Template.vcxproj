@@ -166,6 +166,10 @@
     <ClCompile Include="GLObject.cpp" />
     <ClCompile Include="GLShape.cpp" />
     <ClCompile Include="GLUnit.cpp" />
+    <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="imgui_demo.cpp" />
+    <ClCompile Include="imgui_draw.cpp" />
+    <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Prism.cpp" />
     <ClCompile Include="Pyramid.cpp" />
@@ -187,6 +191,12 @@
     <ClInclude Include="GLObject.h" />
     <ClInclude Include="GLShape.h" />
     <ClInclude Include="GLUnit.h" />
+    <ClInclude Include="imconfig.h" />
+    <ClInclude Include="imgui.h" />
+    <ClInclude Include="imgui_internal.h" />
+    <ClInclude Include="imstb_rectpack.h" />
+    <ClInclude Include="imstb_textedit.h" />
+    <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="Prism.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Shape.h" />

@@ -73,6 +73,21 @@
     <Filter Include="Source Files\game\checkers">
       <UniqueIdentifier>{16c432f2-25a2-4fa6-ba2f-e4a5b54dac36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\utils\tigl">
+      <UniqueIdentifier>{26eba39a-632c-46b8-ba26-5e9b1b4ecf4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils\stb_image">
+      <UniqueIdentifier>{7393aef8-fe93-471d-91b5-67a83d2631fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils\tigl">
+      <UniqueIdentifier>{0fc0131e-ae6a-47a2-b0ea-49d3041182d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils\imgui">
+      <UniqueIdentifier>{3047509b-90e5-4a99-b92a-c4ede10f4b1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils\imgui">
+      <UniqueIdentifier>{43318028-c4d8-470b-a36c-caa5b7570092}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -117,9 +132,6 @@
     <ClCompile Include="ColorGLUnit.cpp">
       <Filter>Source Files\engine\glunits\decorations</Filter>
     </ClCompile>
-    <ClCompile Include="tigl.cpp">
-      <Filter>Source Files\utils</Filter>
-    </ClCompile>
     <ClCompile Include="TextureColorComboGLUnit.cpp">
       <Filter>Source Files\engine\glunits\decorations</Filter>
     </ClCompile>
@@ -131,6 +143,21 @@
     </ClCompile>
     <ClCompile Include="CheckerBoardGL.cpp">
       <Filter>Source Files\game\checkers</Filter>
+    </ClCompile>
+    <ClCompile Include="tigl.cpp">
+      <Filter>Source Files\utils\tigl</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>Source Files\utils\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>Source Files\utils\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>Source Files\utils\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>Source Files\utils\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,9 +178,6 @@
     </ClInclude>
     <ClInclude Include="Sphere.h">
       <Filter>Header Files\engine\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_image.h">
-      <Filter>Header Files\utils</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>Header Files\utils</Filter>
@@ -179,9 +203,6 @@
     <ClInclude Include="ColorGLUnit.h">
       <Filter>Header Files\engine\glunits\decorations</Filter>
     </ClInclude>
-    <ClInclude Include="tigl.h">
-      <Filter>Header Files\utils</Filter>
-    </ClInclude>
     <ClInclude Include="TextureColorComboGLUnit.h">
       <Filter>Header Files\engine\glunits\decorations</Filter>
     </ClInclude>
@@ -193,6 +214,30 @@
     </ClInclude>
     <ClInclude Include="CheckerBoardGL.h">
       <Filter>Header Files\game\checkers</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files\utils\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="tigl.h">
+      <Filter>Header Files\utils\tigl</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>Header Files\utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>Header Files\utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>Header Files\utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>Header Files\utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>Header Files\utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>Header Files\utils\imgui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
