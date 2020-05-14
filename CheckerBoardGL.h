@@ -28,6 +28,7 @@ public:
 	glm::vec2 GetBoardCenter(); /// Gets the center of the surface the board
 	void draw_board();
 private:
+	std::shared_ptr<GLObject> GetSharedCuboid(double x, double y, double z);
 	std::shared_ptr<std::vector<tigl::Vertex>> buffer;
 	std::shared_ptr<std::vector<glm::vec3>> vertices_in;
 	std::shared_ptr<std::vector<glm::vec3>> indices_in;
