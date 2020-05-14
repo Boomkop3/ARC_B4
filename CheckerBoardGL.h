@@ -24,8 +24,8 @@ public:
 	CheckerBoardGL(std::shared_ptr<std::vector<tigl::Vertex>> buffer, std::shared_ptr<std::vector<glm::vec3>> vertices_in, std::shared_ptr<std::vector<glm::vec3>> indices_in);
 	~CheckerBoardGL();
 	void create_board();
-	glm::vec2 GetCoordinateFor(int row, int column); /// Get's bottom left, back corner of the given square
-	glm::vec2 GetBoardCenter(int row, int column); /// Gets the center of the surface the board
+	glm::vec2 GetCoordinateFor(int row, int column); /// Gets the center of the given square > 1 based index
+	glm::vec2 GetBoardCenter(); /// Gets the center of the surface the board
 	void draw_board();
 private:
 	std::shared_ptr<std::vector<tigl::Vertex>> buffer;
@@ -33,3 +33,5 @@ private:
 	std::shared_ptr<std::vector<glm::vec3>> indices_in;
 	std::vector<std::shared_ptr<GLObject>> globjects;
 };
+
+inline double getPartialCoordinateFor(int rowOrCol);
