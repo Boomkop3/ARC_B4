@@ -33,3 +33,5 @@ private:
 	std::shared_ptr<std::vector<glm::vec3>> indices_in;
 	std::vector<std::shared_ptr<GLObject>> globjects;
 };
+
+inline double getPartialCoordinateFor(int rowOrCol);

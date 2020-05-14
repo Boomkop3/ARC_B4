@@ -61,7 +61,7 @@ glm::vec2 CheckerBoardGL::GetCoordinateFor(int row, int column) {
 }
 
 inline double getPartialCoordinateFor(int rowOrCol) {
-	return (rowOrCol - 1) * CUBOID_SIZE;
+	return (rowOrCol - 1.0) * CUBOID_SIZE;
 }
 
 glm::vec2 CheckerBoardGL::GetBoardCenter() {
