@@ -196,7 +196,6 @@ void showFPS(GLFWwindow* window)
 }
 
 
-float angle = .0f;
 static const double updatesPerSecond = 100.;
 static double timer = 1/updatesPerSecond;
 double lastFrameTime = .0;
@@ -212,7 +211,6 @@ void update()
 	if (timer <= 0) {
 		timer = 1./updatesPerSecond;
 		gCamera->update(gWindow);
-		//angle += 5E-4f;
 	}
 }
 
@@ -231,9 +229,9 @@ void draw() {
 	glfwGetWindowSize(gWindow, &width, &height);
 	glViewport(0, 0, width, height);
 
-	glm::mat4 projection = glm::perspective(glm::radians(45.f), width / (float)height, .1f, 100.f);
+	//glm::mat4 projection = glm::perspective(glm::radians(45.f), width / (float)height, .1f, 100.f);
 
-	tigl::shader->setProjectionMatrix(projection);
+	//tigl::shader->setProjectionMatrix(projection);
 	tigl::shader->setViewMatrix(gCamera->getMatrix());
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
