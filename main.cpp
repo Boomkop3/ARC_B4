@@ -247,6 +247,10 @@ std::shared_ptr<CheckerBoardGL> checkerBoardGL;
 void create_checkerboard() {
 	checkerBoardGL = std::make_shared<CheckerBoardGL>(buffer, vertices_in, indices_in);
 	checkerBoardGL->create_board();
+	glm::vec3 centerPos = checkerBoardGL->GetBoardCenter();
+	gCamera->translation.x = -centerPos.x;
+	gCamera->translation.y = -centerPos.y;
+	gCamera->translation.z = -centerPos.z;
 }
 
 void draw() {

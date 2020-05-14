@@ -3,8 +3,7 @@ static double camX;
 static double camZ;
 static double rotX;
 
-static double translationY=0;
-static double translationX=0;
+
 
 GameCamera::GameCamera(GLFWwindow* window)
 {
@@ -21,7 +20,7 @@ glm::mat4 GameCamera::getMatrix()
 		glm::vec3(camX, 0, camZ) + viewPosOrTargetPos,
 		glm::vec3(0,0,0),
 		glm::vec3(0.0f, 1.0f, 0.0f));
-	viewMat = glm::translate(viewMat, glm::vec3(translationX, translationY, 0));
+	viewMat = glm::translate(viewMat, glm::vec3(this->translation.x, this->translation.y, this->translation.z));
 	viewMat = glm::rotate(viewMat, (float)rotX, glm::vec3(1, 0, 0));
 	return viewMat;
 }
@@ -100,13 +99,13 @@ void GameCamera::update2(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS)
 		radius += .1;
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		translationY -= .02;
+		this->translation.y -= .02;
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		translationY += .02;
+		this->translation.y += .02;
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		translationX += .02;
+		this->translation.x += .02;
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		translationX -= .02;
+		this->translation.x -= .02;
 
 	camX = sin(rotY) * radius;
 	camZ = cos(rotY) * radius;
