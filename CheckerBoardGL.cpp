@@ -52,9 +52,16 @@ void CheckerBoardGL::create_board()
 }
 
 glm::vec2 CheckerBoardGL::GetCoordinateFor(int row, int column) {
-	// ToDo make
-	// int x = "";
+	double rowDistance = getPartialCoordinateFor(row);
+	double colDistance = getPartialCoordinateFor(column);
+	return glm::vec2(
+		rowDistance,
+		colDistance
+	);
+}
 
+inline double getPartialCoordinateFor(int rowOrCol) {
+	return (rowOrCol - 1) * CUBOID_SIZE;
 }
 
 glm::vec2 CheckerBoardGL::GetBoardCenter() {
