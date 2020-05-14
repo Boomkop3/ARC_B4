@@ -20,6 +20,17 @@ void CheckerBoardGL::create_board()
 {
 	int textureToggle = 0;
 	std::shared_ptr<TextureAtlas> textureAtlas = std::make_shared<TextureAtlas>(64, 64, 2, 2);
+
+	std::shared_ptr<TextureColorComboGLUnit> blackDecoration = std::make_shared<TextureColorComboGLUnit>();
+	blackDecoration->set_texture_color_filter(1.f, 1.f, 1.f, 1.f); // Apply R G B A filter on top of object
+	blackDecoration->set_texture_atlas(textureAtlas);
+	blackDecoration->set_texture_atlas_coords(2, 1);
+
+	std::shared_ptr<TextureColorComboGLUnit> whiteDecoration = std::make_shared<TextureColorComboGLUnit>();
+	whiteDecoration->set_texture_color_filter(1.f, 1.f, 1.f, 1.f); // Apply R G B A filter on top of object
+	whiteDecoration->set_texture_atlas(textureAtlas);
+	whiteDecoration->set_texture_atlas_coords(1, 2);
+
 	for (int row = 0; row < BOARD_SIZE; row++)
 	{
 		++textureToggle;
@@ -27,28 +38,75 @@ void CheckerBoardGL::create_board()
 		{
 			int x = row * CUBOID_SIZE;
 			int z = col * CUBOID_SIZE;
-			std::shared_ptr<GLShape> sharedShape = std::make_shared<GLShape>(
-				std::make_shared<Cuboid>(CUBOID_SIZE, BOARD_HEIGHT, CUBOID_SIZE)
-			);
-			sharedShape->init_draw(this->buffer, this->vertices_in, this->indices_in);
-			std::shared_ptr<GLObject> sharedGLObject = std::make_shared<GLObject>();
-			sharedGLObject->setDrawGLUnit(sharedShape);
-			sharedGLObject->position = glm::vec3(x, 0 - (CUBOID_SIZE / 2), z);
-			sharedGLObject->rotation = glm::vec3(0, 0, 0); // initialize rotation to prevent unpredictable behaviour
 
-			std::shared_ptr<TextureColorComboGLUnit> sharedDecoration = std::make_shared<TextureColorComboGLUnit>();
-			sharedDecoration->set_texture_color_filter(1.f, 1.f, 1.f, 1.f); // Apply R G B A filter on top of object
-			sharedDecoration->set_texture_atlas(textureAtlas);
+			auto cube = GetSharedCuboid(CUBOID_SIZE, BOARD_HEIGHT, CUBOID_SIZE);
+			cube->position = glm::vec3(x, 0 - (CUBOID_SIZE / 2), z);
+
 			if ((++textureToggle) % 2 == 0) {
-				sharedDecoration->set_texture_atlas_coords(2, 1);
+				cube->setDecorationGLUnit(blackDecoration);
 			}
-			else if (textureToggle % 2 == 1) {
-				sharedDecoration->set_texture_atlas_coords(1, 2);
+			else {
+				cube->setDecorationGLUnit(whiteDecoration);
 			}
-			sharedGLObject->setDecorationGLUnit(sharedDecoration);
-			this->globjects.push_back(sharedGLObject);
+			this->globjects.push_back(cube);
 		}
 	}
+
+	std::shared_ptr<TextureColorComboGLUnit> edgeDecoration = std::make_shared<TextureColorComboGLUnit>();
+	edgeDecoration->set_texture_color_filter(1.f, 1.f, 1.f, 1.f); // Apply R G B A filter on top of object
+	edgeDecoration->set_texture_atlas(textureAtlas);
+	edgeDecoration->set_texture_atlas_coords(2, 2);
+
+	double side_width = CUBOID_SIZE / 4.0 * 3.0;
+	double side_height = side_width / 3 * 2;
+	double side_length = BOARD_SIZE * CUBOID_SIZE;
+	double side_bar_length = BOARD_SIZE * CUBOID_SIZE + (2 * side_width);
+
+	auto leftEdge = GetSharedCuboid(side_bar_length, side_height, side_width);
+	auto rightEdge = GetSharedCuboid(side_bar_length, side_height, side_width);
+	auto backEdge = GetSharedCuboid(side_bar_length, side_height, side_width);
+	auto frontEdge = GetSharedCuboid(side_bar_length, side_height, side_width);
+	leftEdge->position = glm::vec3(
+		(side_length / 2.0) - (CUBOID_SIZE / 2),
+		0 - (CUBOID_SIZE / 2),
+		0 - (CUBOID_SIZE / 2) - (side_width / 2.0)
+	);
+	rightEdge->position = glm::vec3(
+		leftEdge->position.x,
+		leftEdge->position.y,
+		leftEdge->position.z + (side_length)+side_width
+	);
+	backEdge->position = glm::vec3(
+		leftEdge->position.x - ((side_length / 2) + (side_width / 2)),
+		leftEdge->position.y,
+		leftEdge->position.z + ((side_length + side_width) / 2)
+	);
+	frontEdge->position = glm::vec3(
+		leftEdge->position.x + ((side_length / 2) + (side_width / 2)),
+		leftEdge->position.y,
+		leftEdge->position.z + ((side_length + side_width) / 2)
+	);
+	backEdge->rotation = glm::vec3(0, 3.1315926 / 2.0, 0);
+	frontEdge->rotation = backEdge->rotation;
+	leftEdge->setDecorationGLUnit(edgeDecoration);
+	rightEdge->setDecorationGLUnit(edgeDecoration);
+	backEdge->setDecorationGLUnit(edgeDecoration);
+	frontEdge->setDecorationGLUnit(edgeDecoration);
+	this->globjects.push_back(leftEdge);
+	this->globjects.push_back(rightEdge);
+	this->globjects.push_back(backEdge);
+	this->globjects.push_back(frontEdge);
+}
+
+inline std::shared_ptr<GLObject> CheckerBoardGL::GetSharedCuboid(double width, double height, double length) {
+	std::shared_ptr<GLShape> sharedShape = std::make_shared<GLShape>(
+		std::make_shared<Cuboid>(width, height, length)
+	);
+	sharedShape->init_draw(this->buffer, this->vertices_in, this->indices_in);
+	std::shared_ptr<GLObject> sharedGLObject = std::make_shared<GLObject>();
+	sharedGLObject->setDrawGLUnit(sharedShape);
+	sharedGLObject->rotation = glm::vec3(0, 0, 0); // prevent unpredictable behaviour
+	return sharedGLObject;
 }
 
 glm::vec2 CheckerBoardGL::GetCoordinateFor(int row, int column) {
