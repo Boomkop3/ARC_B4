@@ -58,9 +58,11 @@ glm::vec2 CheckerBoardGL::GetCoordinateFor(int row, int column) {
 }
 
 glm::vec2 CheckerBoardGL::GetBoardCenter(int row, int column) {
-	// ToDo make
-	// int x = "";
-
+	double centerDistance = ((BOARD_SIZE / 2.0f) * CUBOID_SIZE);
+	return glm::vec2(
+		centerDistance, 
+		centerDistance
+	);
 }
 
 void CheckerBoardGL::draw_board()
