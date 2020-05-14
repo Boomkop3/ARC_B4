@@ -87,9 +87,9 @@ static double radius = 10;
 void GameCamera::update2(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		rotY+=.02;
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		rotY-=.02;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		rotY+=.02;
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		rotX += .02f;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
