@@ -109,11 +109,12 @@ inline std::shared_ptr<GLObject> CheckerBoardGL::GetSharedCuboid(double width, d
 	return sharedGLObject;
 }
 
-glm::vec2 CheckerBoardGL::GetCoordinateFor(int row, int column) {
+glm::vec3 CheckerBoardGL::GetCoordinateFor(int row, int column) {
 	double rowDistance = getPartialCoordinateFor(row);
 	double colDistance = getPartialCoordinateFor(column);
-	return glm::vec2(
+	return glm::vec3(
 		rowDistance,
+		0,
 		colDistance
 	);
 }
@@ -122,10 +123,11 @@ inline double getPartialCoordinateFor(int rowOrCol) {
 	return (rowOrCol - 1.0) * CUBOID_SIZE;
 }
 
-glm::vec2 CheckerBoardGL::GetBoardCenter() {
+glm::vec3 CheckerBoardGL::GetBoardCenter() {
 	double centerDistance = ((BOARD_SIZE / 2.0f) * CUBOID_SIZE) - (CUBOID_SIZE / 2.0f);
-	return glm::vec2(
+	return glm::vec3(
 		centerDistance, 
+		0, 
 		centerDistance
 	);
 }
