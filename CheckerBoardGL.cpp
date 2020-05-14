@@ -56,7 +56,7 @@ void CheckerBoardGL::create_board()
 	std::shared_ptr<TextureColorComboGLUnit> edgeDecoration = std::make_shared<TextureColorComboGLUnit>();
 	edgeDecoration->set_texture_color_filter(1.f, 1.f, 1.f, 1.f); // Apply R G B A filter on top of object
 	edgeDecoration->set_texture_atlas(textureAtlas);
-	edgeDecoration->set_texture_atlas_coords(1, 1);
+	edgeDecoration->set_texture_atlas_coords(2, 2);
 
 	double side_width = CUBOID_SIZE / 4.0 * 3.0;
 	double side_height = side_width / 3 * 2;
