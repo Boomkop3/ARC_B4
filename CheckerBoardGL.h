@@ -1,0 +1,33 @@
+#pragma once
+#include <iostream>
+#include <time.h>
+#include <sstream>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include "tigl.h"
+#include <glm/gtc/matrix_transform.hpp>
+#include "cuboid.h"
+#include "Pyramid.h"
+#include "Prism.h"
+#include "GLShape.h"
+#include "GLObject.h"
+#include "DecorationGLUnit.h"
+#include "TextureGLUnit.h"
+#include "ColorGLUnit.h"
+#include "TextureColorComboGLUnit.h"
+#include "ColorGLUnit.h"
+#include "GLUnit.h"
+#include "GameCamera.h"
+
+class CheckerBoardGL {
+public:
+	CheckerBoardGL(std::shared_ptr<std::vector<tigl::Vertex>> buffer, std::shared_ptr<std::vector<glm::vec3>> vertices_in, std::shared_ptr<std::vector<glm::vec3>> indices_in);
+	~CheckerBoardGL();
+	void create_board();
+	void draw_board();
+private:
+	std::shared_ptr<std::vector<tigl::Vertex>> buffer;
+	std::shared_ptr<std::vector<glm::vec3>> vertices_in;
+	std::shared_ptr<std::vector<glm::vec3>> indices_in;
+	std::vector<std::shared_ptr<GLObject>> globjects;
+};

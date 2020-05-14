@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{1ebbfe59-f6d9-4b9d-80ce-a4a68d9ce421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{d4453e9f-b90d-43ef-a41e-f0bb804693f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine">
+      <UniqueIdentifier>{8d772c08-6a4b-4f16-a22c-be503322c039}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine\shapes">
+      <UniqueIdentifier>{f4f2a57b-2ff3-481c-a0c6-b64716af2247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine\opengl">
+      <UniqueIdentifier>{af6b34ce-871c-48a8-8f37-44d278d83cae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine\glunits">
+      <UniqueIdentifier>{a896eae5-9949-426c-927f-595f3b1ddf7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine\glunits\drawing">
+      <UniqueIdentifier>{12a2975f-47b5-4454-9039-1cf40b88c2db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine\glunits\decorations">
+      <UniqueIdentifier>{f70209a8-742c-44de-b196-6e431ccc2fca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine">
+      <UniqueIdentifier>{ff692cd6-2ff9-424c-823c-7a132e404431}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine\shapes">
+      <UniqueIdentifier>{66666e7a-61a0-4833-8038-6cafe0d85150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine\opengl">
+      <UniqueIdentifier>{0e35d1d9-d901-4d76-a85e-05aee2fecec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine\glunits">
+      <UniqueIdentifier>{233799ce-0efc-4cb2-a31b-fb2136f30853}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine\glunits\drawing">
+      <UniqueIdentifier>{40e56245-4ef4-487d-aa1f-8ecc82ecf819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine\glunits\decorations">
+      <UniqueIdentifier>{8a63bd88-a553-4723-9cba-5ef162732624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine\camera">
+      <UniqueIdentifier>{c51278ae-0098-4160-8b93-fce32b85a212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\engine\camera">
+      <UniqueIdentifier>{9402070e-210c-4ff7-a0f1-b371beb53b15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game">
+      <UniqueIdentifier>{63086a77-1479-44e6-a21e-b6a464824c7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game">
+      <UniqueIdentifier>{29a20253-1a2f-462a-8c83-91e04b167ae9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game\checkers">
+      <UniqueIdentifier>{18288545-94af-424a-80fe-5a375a2c2f9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\checkers">
+      <UniqueIdentifier>{16c432f2-25a2-4fa6-ba2f-e4a5b54dac36}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cuboid.cpp">
+      <Filter>Source Files\engine\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Cylinder.cpp">
+      <Filter>Source Files\engine\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Prism.cpp">
+      <Filter>Source Files\engine\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Pyramid.cpp">
+      <Filter>Source Files\engine\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>Source Files\engine\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files\engine\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="GLShape.cpp">
+      <Filter>Source Files\engine\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="GLObject.cpp">
+      <Filter>Source Files\engine\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="GLUnit.cpp">
+      <Filter>Source Files\engine\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawGLUnit.cpp">
+      <Filter>Source Files\engine\glunits\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="DecorationGLUnit.cpp">
+      <Filter>Source Files\engine\glunits\decorations</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureGLUnit.cpp">
+      <Filter>Source Files\engine\glunits\decorations</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorGLUnit.cpp">
+      <Filter>Source Files\engine\glunits\decorations</Filter>
+    </ClCompile>
+    <ClCompile Include="tigl.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureColorComboGLUnit.cpp">
+      <Filter>Source Files\engine\glunits\decorations</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCamera.cpp">
+      <Filter>Source Files\engine\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureAtlas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckerBoardGL.cpp">
+      <Filter>Source Files\game\checkers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Cuboid.h">
+      <Filter>Header Files\engine\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Cylinder.h">
+      <Filter>Header Files\engine\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Prism.h">
+      <Filter>Header Files\engine\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Pyramid.h">
+      <Filter>Header Files\engine\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Header Files\engine\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Header Files\engine\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="GLShape.h">
+      <Filter>Header Files\engine\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="GLObject.h">
+      <Filter>Header Files\engine\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="GLUnit.h">
+      <Filter>Header Files\engine\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawGLUnit.h">
+      <Filter>Header Files\engine\glunits\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="DecorationGLUnit.h">
+      <Filter>Header Files\engine\glunits\decorations</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureGLUnit.h">
+      <Filter>Header Files\engine\glunits\decorations</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorGLUnit.h">
+      <Filter>Header Files\engine\glunits\decorations</Filter>
+    </ClInclude>
+    <ClInclude Include="tigl.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureColorComboGLUnit.h">
+      <Filter>Header Files\engine\glunits\decorations</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCamera.h">
+      <Filter>Header Files\engine\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureAtlas.h">
+      <Filter>Header Files\engine\glunits\decorations</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckerBoardGL.h">
+      <Filter>Header Files\game\checkers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
