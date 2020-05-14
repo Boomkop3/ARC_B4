@@ -25,7 +25,7 @@ public:
 	~CheckerBoardGL();
 	void create_board();
 	glm::vec2 GetCoordinateFor(int row, int column); /// Get's bottom left, back corner of the given square
-	glm::vec2 GetBoardCenter(int row, int column); /// Gets the center of the surface the board
+	glm::vec2 GetBoardCenter(); /// Gets the center of the surface the board
 	void draw_board();
 private:
 	std::shared_ptr<std::vector<tigl::Vertex>> buffer;

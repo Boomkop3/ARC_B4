@@ -57,8 +57,8 @@ glm::vec2 CheckerBoardGL::GetCoordinateFor(int row, int column) {
 
 }
 
-glm::vec2 CheckerBoardGL::GetBoardCenter(int row, int column) {
-	double centerDistance = ((BOARD_SIZE / 2.0f) * CUBOID_SIZE);
+glm::vec2 CheckerBoardGL::GetBoardCenter() {
+	double centerDistance = ((BOARD_SIZE / 2.0f) * CUBOID_SIZE) - (CUBOID_SIZE / 2.0f);
 	return glm::vec2(
 		centerDistance, 
 		centerDistance
