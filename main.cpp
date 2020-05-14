@@ -26,7 +26,7 @@
 #define VSYNC_ON 1
 #define VSYNC_OFF 0
 
-using tigl::Vertex;
+// using tigl::Vertex;
 
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
@@ -51,6 +51,7 @@ void create_checkerboard();
 
 static void GLClearError()
 {
+	// Possibility for thread.yield?
 	while (glGetError() != GL_NO_ERROR);
 }
 
@@ -64,17 +65,13 @@ static void GLCheckError() {
 int main(void)
 {
 	std::cout << "Initialize program" << std::endl;
-	if (!init())
+	if (!init()) {
 		return -1;
-	GLCheckError();
-	GLClearError();
+	}
 
 	std::cout << "Create objects" << std::endl;
 
 	create_checkerboard();
-
-	GLCheckError();
-	GLClearError();
 
 	std::cout << "Main program loop" << std::endl;
 	while (!glfwWindowShouldClose(gWindow))
@@ -99,8 +96,9 @@ bool initOpenGL() {
 	{
 		GLFWmonitor* pMonitor = glfwGetPrimaryMonitor();
 		const GLFWvidmode* pVmode = glfwGetVideoMode(pMonitor);
-		if (pVmode != NULL)
+		if (pVmode != NULL) {
 			gWindow = glfwCreateWindow(pVmode->width, pVmode->height, APP_TITLE, pMonitor, NULL);
+		}
 	}
 	else
 	{
@@ -125,23 +123,20 @@ bool initOpenGL() {
 		std::cerr << "Failed to init GLEW" << std::endl;
 		return false;
 	}
-	GLCheckError();
-	GLClearError();
 
 	std::cout << "Clear color, depth test, glfwSwapInterval" << std::endl;
 	glClearColor(.4f, .75f, .6f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glfwSwapInterval(VSYNC_ON);
-	GLCheckError();
-	GLClearError();
 
 	return true;
 }
 
 bool init()
 {
-	if (!initOpenGL())
+	if (!initOpenGL()) {
 		return false;
+	}
 	tigl::init();
 
 	tigl::shader->enableColor(true);
@@ -153,9 +148,11 @@ bool init()
 
 	int width, height, comp;
 
-	//stbi_set_flip_vertically_on_load(true);
-	unsigned char* data = stbi_load("texture_map_checkers.png", &width, &height, &comp, STBI_rgb_alpha); 
-
+	unsigned char* data = stbi_load(
+		"texture_map_checkers.png", 
+		&width, &height, &comp, 
+		STBI_rgb_alpha
+	);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -164,18 +161,14 @@ bool init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	stbi_image_free(data);
-
 	gCamera = new GameCamera(gWindow);
-
 	return true;
 }
 
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
+	// reserved for later use
 }
-
-
-
 
 void showFPS(GLFWwindow* window)
 {
@@ -203,6 +196,7 @@ void showFPS(GLFWwindow* window)
 }
 
 
+float angle = .0f;
 static const double updatesPerSecond = 100.;
 static double timer = 1/updatesPerSecond;
 double lastFrameTime = .0;
@@ -218,18 +212,17 @@ void update()
 	if (timer <= 0) {
 		timer = 1./updatesPerSecond;
 		gCamera->update(gWindow);
+		//angle += 5E-4f;
 	}
 }
-
 
 std::shared_ptr<std::vector<tigl::Vertex>> buffer = std::make_shared<std::vector<tigl::Vertex>>();
 std::shared_ptr<std::vector<glm::vec3>> vertices_in = std::make_shared<std::vector<glm::vec3>>();;
 std::shared_ptr<std::vector<glm::vec3>> indices_in = std::make_shared<std::vector<glm::vec3>>();;
 
-
-CheckerBoardGL* checkerBoardGL;
+std::shared_ptr<CheckerBoardGL> checkerBoardGL;
 void create_checkerboard() {
-	checkerBoardGL = new CheckerBoardGL(buffer, vertices_in, indices_in);
+	checkerBoardGL = std::make_shared<CheckerBoardGL>(buffer, vertices_in, indices_in);
 	checkerBoardGL->create_board();
 }
 
