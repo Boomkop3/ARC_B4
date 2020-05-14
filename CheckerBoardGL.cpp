@@ -52,7 +52,6 @@ void CheckerBoardGL::create_board()
 		}
 	}
 
-
 	std::shared_ptr<TextureColorComboGLUnit> edgeDecoration = std::make_shared<TextureColorComboGLUnit>();
 	edgeDecoration->set_texture_color_filter(1.f, 1.f, 1.f, 1.f); // Apply R G B A filter on top of object
 	edgeDecoration->set_texture_atlas(textureAtlas);
