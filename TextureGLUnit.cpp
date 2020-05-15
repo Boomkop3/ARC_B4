@@ -21,12 +21,12 @@ void TextureGLUnit::fill_vertices(std::vector<glm::vec3>& indices, std::vector<t
 		vertices_out[i] = (tigl::Vertex::PT(indices[i], this->textureAtlas->textureCoords[i % 4]));
 }
 
-void TextureGLUnit::set_texture_atlas(TextureAtlas* textureAtlas)
+void TextureGLUnit::set_texture_atlas(std::shared_ptr<TextureAtlas> textureAtlas)
 {
 	this->textureAtlas = textureAtlas;
 }
 
-TextureAtlas* TextureGLUnit::get_texture_atlas()
+std::shared_ptr<TextureAtlas> TextureGLUnit::get_texture_atlas()
 {
 	return this->textureAtlas;
 }

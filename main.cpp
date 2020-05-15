@@ -30,20 +30,11 @@
 #define VSYNC_ON 1
 #define VSYNC_OFF 0
 
-// using tigl::Vertex;
-
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")
 
-const char* APP_TITLE = "Open GL test";
-const int gWindowWidth = 800;
-const int gWindowHeight = 600;
-bool gFullscreen = false;
-
-GLFWwindow* gWindow = NULL;
-GameCamera* gCamera = NULL;
-
+//Prototypes
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode);
 void update();
 void imGuiUpdate();
@@ -51,9 +42,24 @@ void initImGui();
 void destroyImGui();
 bool initOpenGL();
 bool init();
-
 void draw();
 void create_checkerboard();
+
+//ARC vars
+const char* APP_TITLE = "Augmented Reality Checkers";
+const int gWindowWidth = 800;
+const int gWindowHeight = 600;
+bool gFullscreen = false;
+
+//Window pointer
+GLFWwindow* gWindow = NULL;
+
+//Shared (smart) pointers
+std::shared_ptr<GameCamera> gCamera;
+std::shared_ptr<std::vector<tigl::Vertex>> buffer = std::make_shared<std::vector<tigl::Vertex>>();
+std::shared_ptr<std::vector<glm::vec3>> vertices_in = std::make_shared<std::vector<glm::vec3>>();;
+std::shared_ptr<std::vector<glm::vec3>> indices_in = std::make_shared<std::vector<glm::vec3>>();;
+std::shared_ptr<CheckerBoardGL> checkerBoardGL;
 
 static void GLClearError()
 {
@@ -74,19 +80,14 @@ int main(void)
 	if (!init()) {
 		return -1;
 	}
-
-	std::cout << "Create objects" << std::endl;
-
+	//Create board
 	create_checkerboard();
-
 	//Setup IMGUI
 	initImGui();
-
+	//Set clear color
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-
-
-	std::cout << "Main program loop" << std::endl;
+	std::cout << "Setup done, entering program loop..." << std::endl;
 	while (!glfwWindowShouldClose(gWindow))
 	{
 
@@ -211,7 +212,7 @@ bool init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	stbi_image_free(data);
-	gCamera = new GameCamera(gWindow);
+	gCamera = std::make_shared<GameCamera>(gWindow);
 
 
 	return true;
@@ -238,11 +239,6 @@ void update()
 		gCamera->update(gWindow);
 	}
 }
-
-std::shared_ptr<std::vector<tigl::Vertex>> buffer = std::make_shared<std::vector<tigl::Vertex>>();
-std::shared_ptr<std::vector<glm::vec3>> vertices_in = std::make_shared<std::vector<glm::vec3>>();;
-std::shared_ptr<std::vector<glm::vec3>> indices_in = std::make_shared<std::vector<glm::vec3>>();;
-std::shared_ptr<CheckerBoardGL> checkerBoardGL;
 
 void create_checkerboard() {
 	checkerBoardGL = std::make_shared<CheckerBoardGL>(buffer, vertices_in, indices_in);

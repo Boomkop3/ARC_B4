@@ -10,7 +10,7 @@ class Shape
 public:
 	typedef enum ShapeType { ABSTRACT, CUBOID, CYLINDER, PRISM, PYRAMID, SPHERE } ShapeType;
 
-	void set_dimension(double, double, double);
+	void set_dimension(double width, double height, double depth);
 	void set_width(double);
 	void set_height(double);
 	void set_depth(double);
