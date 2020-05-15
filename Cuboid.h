@@ -20,4 +20,3 @@ public:
 	const static int vertices_count = 8;
 	const static int indices_count = 24; // 36 when using triangles
 };
-

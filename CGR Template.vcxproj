@@ -157,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractShape.cpp" />
     <ClCompile Include="CheckerBoardGL.cpp" />
     <ClCompile Include="ColorGLUnit.cpp" />
     <ClCompile Include="Cuboid.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="tigl.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractShape.h" />
     <ClInclude Include="CheckerBoardGL.h" />
     <ClInclude Include="ColorGLUnit.h" />
     <ClInclude Include="Cuboid.h" />

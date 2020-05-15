@@ -165,6 +165,9 @@
     <ClCompile Include="imgui_impl_opengl3.cpp">
       <Filter>Source Files\utils\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="AbstractShape.cpp">
+      <Filter>Source Files\engine\shapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cuboid.h">
@@ -250,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="imgui_impl_opengl3.h">
       <Filter>Header Files\utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractShape.h">
+      <Filter>Header Files\engine\shapes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
