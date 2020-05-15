@@ -19,23 +19,17 @@ CheckerBoardGL::~CheckerBoardGL()
 void CheckerBoardGL::create_board()
 {
 	int textureToggle = 0;
-	std::shared_ptr<TextureAtlas> textureAtlas = std::make_shared<TextureAtlas>(64, 64, 2, 2);
-
-	std::shared_ptr<TextureColorComboGLUnit> blackDecoration = std::make_shared<TextureColorComboGLUnit>();
-	blackDecoration->set_texture_color_filter(1.f, 1.f, 1.f, 1.f); // Apply R G B A filter on top of object
-	blackDecoration->set_texture_atlas(textureAtlas);
-	blackDecoration->set_texture_atlas_coords(2, 1);
-
-	std::shared_ptr<TextureColorComboGLUnit> whiteDecoration = std::make_shared<TextureColorComboGLUnit>();
-	whiteDecoration->set_texture_color_filter(1.f, 1.f, 1.f, 1.f); // Apply R G B A filter on top of object
-	whiteDecoration->set_texture_atlas(textureAtlas);
-	whiteDecoration->set_texture_atlas_coords(1, 2);
+	std::shared_ptr<TextureAtlas> textureAtlas = std::make_shared<TextureAtlas>(64, 96, 2, 3);
 
 	for (int row = 0; row < BOARD_SIZE; row++)
 	{
 		++textureToggle;
 		for (int col = 0; col < BOARD_SIZE; col++)
 		{
+			std::shared_ptr<TextureColorComboGLUnit> decoration = std::make_shared<TextureColorComboGLUnit>();
+			decoration->set_texture_color_filter(1.f, 1.f, 1.f, 1.f); // Apply R G B A filter on top of object
+			decoration->set_texture_atlas(textureAtlas);
+
 			int x = row * CUBOID_SIZE;
 			int z = col * CUBOID_SIZE;
 
@@ -43,11 +37,12 @@ void CheckerBoardGL::create_board()
 			cube->position = glm::vec3(x, 0 - (CUBOID_SIZE / 2), z);
 
 			if ((++textureToggle) % 2 == 0) {
-				cube->setDecorationGLUnit(blackDecoration);
+				decoration->set_texture_atlas_coords(2, 1);
 			}
 			else {
-				cube->setDecorationGLUnit(whiteDecoration);
+				decoration->set_texture_atlas_coords(1, 2);
 			}
+			cube->setDecorationGLUnit(decoration);
 			this->globjects.push_back(cube);
 		}
 	}
@@ -101,7 +96,7 @@ void CheckerBoardGL::create_board()
 inline std::shared_ptr<GLObject> CheckerBoardGL::GetSharedCuboid(double width, double height, double length) {
 	std::shared_ptr<GLShape> sharedShape = std::make_shared<GLShape>(
 		std::make_shared<Cuboid>(width, height, length)
-	);
+		);
 	sharedShape->init_draw(this->buffer, this->vertices_in, this->indices_in);
 	std::shared_ptr<GLObject> sharedGLObject = std::make_shared<GLObject>();
 	sharedGLObject->setDrawGLUnit(sharedShape);
@@ -119,6 +114,28 @@ glm::vec3 CheckerBoardGL::GetCoordinateFor(int row, int column) {
 	);
 }
 
+std::shared_ptr<GLObject> CheckerBoardGL::GetShapeByCoordinate(int column, int row) {
+	int index = 0;
+	for (int x = 0; x < row - 1; x++)
+		index++;
+	for (int z = 0; z < column - 1; z++) 
+		index++;
+	return this->globjects[index];
+}
+
+std::shared_ptr<GLObject> CheckerBoardGL::highlightByCoordinate(int column, int row) {
+	int index = 0;
+	for (int x = 0; x < row - 1; x++) {
+		index++;
+		for (int z = 0; z < column - 1; z++)
+			index++;
+	}
+	std::shared_ptr<TextureColorComboGLUnit> colorCombo = std::static_pointer_cast<TextureColorComboGLUnit>(this->globjects[index]->decorationGLUnit);
+		colorCombo->set_texture_atlas_coords(1, 3);
+	return this->globjects[index];
+	
+}
+
 inline double getPartialCoordinateFor(int rowOrCol) {
 	return (rowOrCol - 1.0) * CUBOID_SIZE;
 }
@@ -126,8 +143,8 @@ inline double getPartialCoordinateFor(int rowOrCol) {
 glm::vec3 CheckerBoardGL::GetBoardCenter() {
 	double centerDistance = ((BOARD_SIZE / 2.0f) * CUBOID_SIZE) - (CUBOID_SIZE / 2.0f);
 	return glm::vec3(
-		centerDistance, 
-		0, 
+		centerDistance,
+		0,
 		centerDistance
 	);
 }

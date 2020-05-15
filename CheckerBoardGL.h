@@ -25,6 +25,8 @@ public:
 	~CheckerBoardGL();
 	void create_board();
 	glm::vec3 GetCoordinateFor(int row, int column); /// Gets the center of the given square > 1 based index
+	std::shared_ptr<GLObject> GetShapeByCoordinate(int column, int row);
+	std::shared_ptr<GLObject> highlightByCoordinate(int column, int row);
 	glm::vec3 GetBoardCenter(); /// Gets the center of the surface the board
 	void draw_board();
 private:

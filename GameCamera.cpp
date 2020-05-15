@@ -31,57 +31,6 @@ void GameCamera::move(float angle, float fac)
 	position.z += (float)sin(rotation.y + glm::radians(angle)) * fac;
 }
 
-void GameCamera::move2()
-{
-
-}
-
-
-void GameCamera::update(GLFWwindow* window)
-{
-	update2(window);
-	return;
-
-	double x, y;
-	glfwGetCursorPos(window, &x, &y);
-
-	static double lastX = x;
-	static double lastY = y;
-
-	std::cout << "rot y: " << rotation.y << std::endl;
-
-
-	if (!this->mousePointerEnabled) {
-
-		rotation.x -= (float)(lastY - y) / 1000.f;
-		rotation.y -= (float)(lastX - x) / 1000.f;
-
-		lastX = x;
-		lastY = y;
-
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-			move(0, .05f);
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-			move(180, .05f);
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-			move(90, .05f);
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-			move(-90, .05f);
-	}
-	static bool holdButton = false;
-
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-		if (!holdButton) {
-			glfwSetInputMode(window, GLFW_CURSOR, this->mousePointerEnabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
-			this->mousePointerEnabled = !this->mousePointerEnabled;
-		}
-		holdButton = true;
-	}
-	else if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_RELEASE) {
-		holdButton = false;
-	}
-}
-
 static double rotY=0;
 static double radius = 10;
 void GameCamera::update2(GLFWwindow* window)
@@ -98,6 +47,12 @@ void GameCamera::update2(GLFWwindow* window)
 		radius-=.1;
 	if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS)
 		radius += .1;
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+		setPlayer1Cam();
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+		setPlayer2Cam();
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+		setStartGamePosition();
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 		this->translation.y -= .02;
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
@@ -123,5 +78,71 @@ void GameCamera::update2(GLFWwindow* window)
 	}
 	else if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_RELEASE) {
 		holdButton = false;
+	} 
+}
+
+void GameCamera::checkTargetRadius() {
+	if (this->targetRadius != -1) {
+		if (radius != targetRadius) {
+			std::cout << "Absolute value" << std::abs(targetRadius - radius) << std::endl; 
+			if (std::abs(targetRadius - radius) > INC_DEC_VALUE_RADIUS) {
+				if (radius > targetRadius)
+					radius -= INC_DEC_VALUE_RADIUS;
+				else
+					radius += INC_DEC_VALUE_RADIUS;
+			}
+			else targetRadius = -1;
+		}
 	}
+}
+
+void GameCamera::checkTargetRotation() {
+	if (this->targetRotation.x != -1) {
+		if (rotX != targetRotation.x) {
+			std::cout << "Absolute value" << std::abs(targetRotation.x - rotX) << std::endl;
+			if (std::abs(targetRotation.x - rotX) > INC_DEC_VALUE_ROTATIONX) {
+				if (rotX > targetRotation.x)
+					rotX -= INC_DEC_VALUE_ROTATIONX;
+				else
+					rotX += INC_DEC_VALUE_ROTATIONX;
+			}
+			else {
+				rotX = targetRotation.x;
+				targetRotation.x = -1;
+			}
+		}
+	}
+
+	if (this->targetRotation.y != -1) {
+		if (rotY != targetRotation.y) {
+			if (std::abs(targetRotation.y - rotY) > INC_DEC_VALUE_ROTATIONY) {
+				if (rotY > targetRotation.y)
+					rotY -= INC_DEC_VALUE_ROTATIONY;
+				else
+					rotY += INC_DEC_VALUE_ROTATIONY;
+			}
+			else {
+				rotY = targetRotation.y;
+				targetRotation.y = -1;
+			}
+		}
+	}
+}
+
+void GameCamera::setPlayer1Cam() {
+	this->targetRadius = 10.7;
+	this->targetRotation.y = 0;
+	this->targetRotation.x = .17 * PI;
+}
+
+void GameCamera::setPlayer2Cam() {
+	this->targetRadius = 10.7;
+	this->targetRotation.y = PI;
+	this->targetRotation.x = -.17 * PI;
+}
+
+void GameCamera::setStartGamePosition() {
+	rotX = PI / 2.;
+	radius = 1.;
+	this->targetRadius = 11.3;
 }

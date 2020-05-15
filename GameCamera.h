@@ -5,6 +5,10 @@
 #include "utils.h"
 #include <iostream>
 
+#define INC_DEC_VALUE_RADIUS .07
+#define INC_DEC_VALUE_ROTATIONX .0095
+#define INC_DEC_VALUE_ROTATIONY .025
+
 struct GLFWwindow;
 
 class GameCamera
@@ -12,15 +16,20 @@ class GameCamera
 public:
 	GameCamera(GLFWwindow*);
 	glm::mat4 getMatrix();
-	void update(GLFWwindow*);
 	void update2(GLFWwindow*);
+	void checkTargetRadius();
+	void checkTargetRotation();
+	void setPlayer1Cam();
+	void setPlayer2Cam();
+	void setStartGamePosition();
 	glm::vec3 translation = glm::vec3(0, 0, 0);
+	double targetRadius = -1;
+	glm::vec3 targetRotation = glm::vec3(-1, -1 , -1);
 private:
 	glm::vec3 position = glm::vec3(0, 0, 0);
-	glm::vec2 rotation = glm::vec2(0, 0);
+	glm::vec3 rotation = glm::vec3(0, 0, 0);
 	bool mousePointerEnabled = false;
 	void move(float angle, float fac);
-	void move2();
 };
 
 

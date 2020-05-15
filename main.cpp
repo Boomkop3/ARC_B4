@@ -56,10 +56,10 @@ GLFWwindow* gWindow = NULL;
 
 //Shared (smart) pointers
 std::shared_ptr<GameCamera> gCamera;
-std::shared_ptr<std::vector<tigl::Vertex>> buffer = std::make_shared<std::vector<tigl::Vertex>>();
-std::shared_ptr<std::vector<glm::vec3>> vertices_in = std::make_shared<std::vector<glm::vec3>>();;
-std::shared_ptr<std::vector<glm::vec3>> indices_in = std::make_shared<std::vector<glm::vec3>>();;
-std::shared_ptr<CheckerBoardGL> checkerBoardGL;
+std::shared_ptr<std::vector<tigl::Vertex>> gBuffer = std::make_shared<std::vector<tigl::Vertex>>();
+std::shared_ptr<std::vector<glm::vec3>> gVertices_in = std::make_shared<std::vector<glm::vec3>>();;
+std::shared_ptr<std::vector<glm::vec3>> gIndices_in = std::make_shared<std::vector<glm::vec3>>();;
+std::shared_ptr<CheckerBoardGL> gCheckerBoardGL;
 
 static void GLClearError()
 {
@@ -90,14 +90,11 @@ int main(void)
 	std::cout << "Setup done, entering program loop..." << std::endl;
 	while (!glfwWindowShouldClose(gWindow))
 	{
-
 		update();
 		draw();
 		imGuiUpdate();
 		glfwSwapBuffers(gWindow);
 		glfwPollEvents();
-
-		
 	}
 	destroyImGui();
 	glfwTerminate();
@@ -200,7 +197,7 @@ bool init()
 	int width, height, comp;
 
 	unsigned char* data = stbi_load(
-		"texture_map_checkers.png", 
+		"texture_map_checkers3.png", 
 		&width, &height, &comp, 
 		STBI_rgb_alpha
 	);
@@ -221,6 +218,10 @@ bool init()
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	// reserved for later use
+	if (key == GLFW_KEY_T && action == GLFW_PRESS)
+	{
+//		gCheckerBoardGL->highlightByCoordinate(5, 5);
+	}
 }
 
 static const double updatesPerSecond = 100.;
@@ -236,17 +237,21 @@ void update()
 	timer -= deltaTime;
 	if (timer <= 0) {
 		timer = 1./updatesPerSecond;
-		gCamera->update(gWindow);
+		gCamera->update2(gWindow);
+		gCamera->checkTargetRadius();
+		gCamera->checkTargetRotation();
 	}
 }
 
 void create_checkerboard() {
-	checkerBoardGL = std::make_shared<CheckerBoardGL>(buffer, vertices_in, indices_in);
-	checkerBoardGL->create_board();
-	glm::vec3 centerPos = checkerBoardGL->GetBoardCenter();
+	gCheckerBoardGL = std::make_shared<CheckerBoardGL>(gBuffer, gVertices_in, gIndices_in);
+	gCheckerBoardGL->create_board();
+	glm::vec3 centerPos = gCheckerBoardGL->GetBoardCenter();
 	gCamera->translation.x = -centerPos.x;
 	gCamera->translation.y = -centerPos.y;
 	gCamera->translation.z = -centerPos.z;
+
+	gCamera->setStartGamePosition();
 }
 
 void draw() {
@@ -261,5 +266,5 @@ void draw() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	checkerBoardGL->draw_board();
+	gCheckerBoardGL->draw_board();
 }

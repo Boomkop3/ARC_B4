@@ -16,7 +16,7 @@ public:
 	std::shared_ptr<TextureAtlas> get_texture_atlas();
 	void set_texture_atlas_coords(int image_col, int image_row);
 	glm::vec2 textureAtlasCoords = glm::vec2(-1, -1);
-private: 
 	glm::vec4 color = glm::vec4(1.f, 1.f, 1.f, 1.f);
+private: 
 	std::shared_ptr<TextureAtlas> textureAtlas;
 };
