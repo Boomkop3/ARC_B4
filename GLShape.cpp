@@ -36,14 +36,14 @@ GLenum GLShape::get_draw_type() const
 	GLenum draw_type = GL_TRIANGLES;
 
 	switch (this->shape->get_shape_type()) {
-	case Shape::ABSTRACT:
-		std::cout << "Why are you attempting to draw an abstract shape? Skipping draw." << std::endl;
-		break;
-	case Shape::CUBOID: draw_type = GL_QUADS; break;
-	case Shape::CYLINDER: break;
-	case Shape::SPHERE: break;
-	case Shape::PRISM: break;
-	case Shape::PYRAMID: break;
+		case Shape::ABSTRACT:
+			std::cout << "Why are you attempting to draw an abstract shape? Skipping draw." << std::endl;
+			break;
+		case Shape::CUBOID: draw_type = GL_QUADS; break;
+		case Shape::CYLINDER: break;
+		case Shape::SPHERE: break;
+		case Shape::PRISM: break;
+		case Shape::PYRAMID: break;
 	}
 	return draw_type;
 }

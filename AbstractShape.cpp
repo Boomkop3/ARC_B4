@@ -58,5 +58,5 @@ double AbstractShape::get_depth(void) const
 
 AbstractShape::ShapeType AbstractShape::get_shape_type() const
 {
-	return ShapeType();
+	return this->shape_type;
 }
