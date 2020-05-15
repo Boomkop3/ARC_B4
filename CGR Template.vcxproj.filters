@@ -169,7 +169,7 @@
       <Filter>Source Files\engine\shapes</Filter>
     </ClCompile>
     <ClCompile Include="AdvancedShape.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\engine\shapes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
