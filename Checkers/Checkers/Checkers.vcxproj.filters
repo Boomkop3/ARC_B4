@@ -33,9 +33,6 @@
     <ClCompile Include="BoardHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BoardInfo.cpp">
-      <Filter>Source Files\BoardInformation</Filter>
-    </ClCompile>
     <ClCompile Include="CheckersGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -51,9 +48,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BoardHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BoardInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CheckersGame.h">

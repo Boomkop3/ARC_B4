@@ -14,13 +14,18 @@ public:
 	std::vector<Piece> getPieces();
 	void setPieces(std::vector<Piece> _pieces);
 	void updatePiecesOnBoardPositions();
-
 	void printBoard();
+	bool checkGameFinished();
+
+	//attributes
+	bool whiteToMove = true;
+	bool gameFinished;
 private:
 	//attributes
 	const int boardSize = 8;
 	std::vector<std::vector<BoardPos>> boardPositions;
 	std::vector<Piece> pieces;
+	
 
 	//functions
 	void initializeBoardPositions();

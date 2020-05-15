@@ -6,7 +6,9 @@ CheckersGame::CheckerState CheckersGame::updateMove(BoardPos originalPos, std::v
 	return CheckerState();
 }
 
-BoardInfo CheckersGame::getBoardInfo()
+BoardState CheckersGame::getBoardState()
 {
-	return boardInfo;
+	return boardState;
 }
+
+

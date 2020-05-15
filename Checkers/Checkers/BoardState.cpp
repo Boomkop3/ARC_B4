@@ -151,4 +151,9 @@ void BoardState::printBoard()
 	}
 }
 
+bool BoardState::checkGameFinished()
+{
+	return false;
+}
+
 

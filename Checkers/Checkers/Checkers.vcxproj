@@ -152,7 +152,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BoardHelper.cpp" />
-    <ClCompile Include="BoardInfo.cpp" />
     <ClCompile Include="BoardPos.cpp" />
     <ClCompile Include="BoardState.cpp" />
     <ClCompile Include="Checkers.cpp" />
@@ -161,7 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoardHelper.h" />
-    <ClInclude Include="BoardInfo.h" />
     <ClInclude Include="BoardPos.h" />
     <ClInclude Include="BoardState.h" />
     <ClInclude Include="CheckersGame.h" />

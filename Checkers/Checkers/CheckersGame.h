@@ -1,15 +1,15 @@
 #pragma once
-#include "BoardInfo.h"
+#include "BoardState.h"
 class CheckersGame
 {
 public:
 	//attributes
-	BoardInfo boardInfo;
+	BoardState boardState;
 	enum CheckerState {ValidMove, InvalidMove, GameCompleted};
 
 private:
 	//functions
 	CheckerState updateMove(BoardPos originalPos, std::vector<BoardPos> movePositions);
-	BoardInfo getBoardInfo();
+	BoardState getBoardState();
 };
 
