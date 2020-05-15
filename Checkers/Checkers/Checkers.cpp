@@ -4,13 +4,13 @@
 
 int main()
 {
-    BoardState b;
+    BoardState state;
     //b.printBoard();
     BoardHelper h;
     BoardPos bp = BoardPos(0, 0);
-    h.MakeDoublePiece(bp, b);    
-    b.printBoard();
-    h.RemovePiece(bp, b);
-    b.printBoard();
+	BoardPos bp2 = BoardPos(5, 7);
+	state.printBoard();
+	 bool check = h.obligatedToTake(bp2, bp, state);
+	//h.checkIfLegalMove(bp, bp2, state);
 }
 

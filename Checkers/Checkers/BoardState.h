@@ -16,6 +16,7 @@ public:
 	void updatePiecesOnBoardPositions();
 	void printBoard();
 	bool checkGameFinished();
+	BoardPos* getSingleBoardPos(int x, int y);
 
 	//attributes
 	bool whiteToMove = true;
@@ -31,7 +32,7 @@ private:
 	void initializeBoardPositions();
 	void placeStartPieces();
 	
-	BoardPos* getSingleBoardPos(int x, int y);
+	
 	
 };
 

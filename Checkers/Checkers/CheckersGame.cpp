@@ -1,8 +1,9 @@
 #include "CheckersGame.h"
 
-CheckersGame::CheckerState CheckersGame::updateMove(BoardPos originalPos, std::vector<BoardPos> movePositions)
+
+CheckersGame::CheckerState CheckersGame::updateMove(BoardPos originalPos, BoardPos movePosition)
 {
-	//update move logics
+	//move logics
 	return CheckerState();
 }
 

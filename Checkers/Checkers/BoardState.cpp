@@ -32,7 +32,7 @@ void BoardState::initializeBoardPositions()
 		std::vector<BoardPos> row;
 		for (int x = 0; x < boardSize; x++)
 		{
-			row.push_back(BoardPos(x, y));		
+			row.push_back(BoardPos(y, x));		
 		}
 		boardPositions.push_back(row);
 	}
@@ -84,6 +84,9 @@ void BoardState::placeStartPieces()
 			pieces.push_back(Piece(Piece::Black, *getSingleBoardPos(7, i)));
 		}
 	}
+
+	//test!!!! haal deze weg !!!!
+	pieces.push_back(Piece(Piece::White, *getSingleBoardPos(4, 6)));
 }
 
 void BoardState::updatePiecesOnBoardPositions()
