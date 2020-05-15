@@ -9,19 +9,29 @@ GLShape::GLShape(std::shared_ptr<Shape> shape)
 	this->shape = shape;
 }
 
+
 void GLShape::draw() const
 {
 	if (this->vertex_vector && this->vertices && this->indices) {
 		GLenum draw_type = get_draw_type();
 
-		this->shape->get_indices(*this->vertices, *this->indices);
-		this->vertex_vector->resize(this->indices->size());
+		if (draw_type == GL_ZERO) {
+			drawAdvanced();
+		}
+		else {
+			this->shape->get_indices(*this->vertices, *this->indices);
+			this->vertex_vector->resize(this->indices->size());
 
-		Shape::ShapeType shapeType = this->shape->get_shape_type();
-		this->glObject->decorationGLUnit->fill_vertices(*this->indices, *this->vertex_vector, shapeType);
+			Shape::ShapeType shapeType = this->shape->get_shape_type();
+			this->glObject->decorationGLUnit->fill_vertices(*this->indices, *this->vertex_vector, shapeType);
 
-		tigl::drawVertices(draw_type, *this->vertex_vector);
+			tigl::drawVertices(draw_type, *this->vertex_vector);
+		}
 	}
+}
+
+void GLShape::drawAdvanced() const {
+
 }
 
 void GLShape::init_draw(std::shared_ptr<std::vector<tigl::Vertex>> vertex_vector, std::shared_ptr<std::vector<glm::vec3>> vertices, std::shared_ptr<std::vector<glm::vec3>> indices)
@@ -44,6 +54,7 @@ GLenum GLShape::get_draw_type() const
 		case Shape::SPHERE: break;
 		case Shape::PRISM: break;
 		case Shape::PYRAMID: break;
+		case Shape::ADVANCED: draw_type = GL_ZERO; break;
 	}
 	return draw_type;
 }

@@ -158,6 +158,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AbstractShape.cpp" />
+    <ClCompile Include="AdvancedShape.cpp" />
     <ClCompile Include="CheckerBoardGL.cpp" />
     <ClCompile Include="ColorGLUnit.cpp" />
     <ClCompile Include="Cuboid.cpp" />
@@ -186,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractShape.h" />
+    <ClInclude Include="AdvancedShape.h" />
     <ClInclude Include="CheckerBoardGL.h" />
     <ClInclude Include="ColorGLUnit.h" />
     <ClInclude Include="Cuboid.h" />

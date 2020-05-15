@@ -168,6 +168,9 @@
     <ClCompile Include="AbstractShape.cpp">
       <Filter>Source Files\engine\shapes</Filter>
     </ClCompile>
+    <ClCompile Include="AdvancedShape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cuboid.h">
@@ -256,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="AbstractShape.h">
       <Filter>Header Files\engine\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="AdvancedShape.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

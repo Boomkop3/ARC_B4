@@ -8,7 +8,8 @@ public:
 		CYLINDER,
 		PRISM,
 		PYRAMID,
-		SPHERE
+		SPHERE, 
+		ADVANCED
 	} ShapeType;
 
 	void set_dimension(double width, double height, double depth);
