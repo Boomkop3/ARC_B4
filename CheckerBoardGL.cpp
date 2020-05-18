@@ -17,15 +17,30 @@ CheckerBoardGL::~CheckerBoardGL()
 }
 
 void CheckerBoardGL::addPieces() {
-	auto cylinder = std::make_shared<Cylinder>();
-	auto indices_types = new std::vector<std::tuple<glm::vec3, int>>;
-	cylinder->get_geometry(*indices_types);
+	std::shared_ptr<GLShape> sharedShape = std::make_shared<GLShape>(
+		std::make_shared<Cylinder>(1, 0.25, 1)
+	);
+	sharedShape->init_draw(this->buffer, this->vertices_in, this->indices_in);
+	std::shared_ptr<GLObject> sharedGLObject = std::make_shared<GLObject>();
+	sharedGLObject->setDrawGLUnit(sharedShape);
+	sharedGLObject->position = glm::vec3(0, 0, 0);
+	sharedGLObject->rotation = glm::vec3(0, 0, 0); // prevent unpredictable behaviour
+
+	std::shared_ptr<TextureAtlas> textureAtlas = std::make_shared<TextureAtlas>(64, 64, 2, 2);
+
+	std::shared_ptr<TextureColorComboGLUnit> pieceDecoration = std::make_shared<TextureColorComboGLUnit>();
+	pieceDecoration->set_texture_color_filter(0.2f, 0.2f, 0.2f, 1.0f); // Apply R G B A filter on top of object
+	pieceDecoration->set_texture_atlas(textureAtlas);
+	pieceDecoration->set_texture_atlas_coords(2, 1);
+
+	sharedGLObject->setDecorationGLUnit(pieceDecoration);
+
+	this->globjects.push_back(sharedGLObject);
 }
 
 void CheckerBoardGL::create_board()
 {
 	addPieces();
-
 	int textureToggle = 0;
 	std::shared_ptr<TextureAtlas> textureAtlas = std::make_shared<TextureAtlas>(64, 64, 2, 2);
 

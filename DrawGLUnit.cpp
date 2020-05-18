@@ -1,7 +1,5 @@
 #include "DrawGLUnit.h"
 
-
-
 DrawGLUnit::DrawGLUnit()
 {
 }

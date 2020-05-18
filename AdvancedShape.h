@@ -12,6 +12,6 @@ public:
 	AdvancedShape();
 	AdvancedShape(double width, double height, double depth);
 	virtual void get_geometry(
-		std::vector<std::tuple<glm::vec3, int>>& indices_types_out
+		std::vector<SpecificIndice>& indices_types_out
 	) const = 0;
 };
