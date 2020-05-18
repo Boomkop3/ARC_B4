@@ -54,9 +54,16 @@ bool BoardHelper::obligatedToTake(BoardState& state) {
 	
 	for (Piece piece : currentPieces) {
 		if (checkIfPieceCanTake(piece, state)) {
+			if (piece.color == 0) {
+				std::cout << "white must take a piece" << std::endl;
+			}
+			else {
+				std::cout << "black must take a piece" << std::endl;
+			}		
 			return true;
 		}
 	}
+
 	return false;
 }
 

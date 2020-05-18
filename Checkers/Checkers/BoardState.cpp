@@ -45,21 +45,21 @@ void BoardState::placeStartPieces()
 	for (int i = 0; i < boardSize; i++)
 	{
 		if (i % 2 == 0) {
-			pieces.push_back(Piece(Piece::White, *getSingleBoardPos(0, i)));
+			pieces.push_back(Piece(Piece::White, *getSingleBoardPos(i, 0)));
 		}
 	}
 	//rij 2
 	for (int i = 0; i < boardSize; i++)
 	{
 		if (i % 2 != 0) {
-			pieces.push_back(Piece(Piece::White, *getSingleBoardPos(1, i)));
+			pieces.push_back(Piece(Piece::White, *getSingleBoardPos(i, 1)));
 		}
 	}
 	//rij 3
 	for (int i = 0; i < boardSize; i++)
 	{
 		if (i % 2 == 0) {
-			pieces.push_back(Piece(Piece::White, *getSingleBoardPos(2, i)));
+			pieces.push_back(Piece(Piece::White, *getSingleBoardPos(i, 2)));
 		}
 	}
 
@@ -67,26 +67,27 @@ void BoardState::placeStartPieces()
 	for (int i = 0; i < boardSize; i++)
 	{
 		if (i % 2 != 0) {
-			pieces.push_back(Piece(Piece::Black, *getSingleBoardPos(5, i)));
+			pieces.push_back(Piece(Piece::Black, *getSingleBoardPos(i, 5)));
 		}
 	}
 	// rij 7
 	for (int i = 0; i < boardSize; i++)
 	{
 		if (i % 2 == 0) {
-			pieces.push_back(Piece(Piece::Black, *getSingleBoardPos(6, i)));
+			pieces.push_back(Piece(Piece::Black, *getSingleBoardPos(i, 6)));
 		}
 	}
 	// rij 8
 	for (int i = 0; i < boardSize; i++)
 	{
 		if (i % 2 != 0) {
-			pieces.push_back(Piece(Piece::Black, *getSingleBoardPos(7, i)));
+			pieces.push_back(Piece(Piece::Black, *getSingleBoardPos(i, 7)));
 		}
 	}
 
 	//test!!!! haal deze weg !!!!
-	pieces.push_back(Piece(Piece::White, *getSingleBoardPos(4, 6)));
+	//pieces.push_back(Piece(Piece::White, *getSingleBoardPos(4, 6)));
+	pieces.push_back(Piece(Piece::Black, *getSingleBoardPos(3, 3)));
 }
 
 void BoardState::updatePiecesOnBoardPositions()

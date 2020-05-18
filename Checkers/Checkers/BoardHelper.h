@@ -20,4 +20,4 @@ private:
 	bool checkRightDown(Piece piece, BoardState& state);
 };
 
-bool checkLeftUp(Piece piece, BoardState& state);
+
