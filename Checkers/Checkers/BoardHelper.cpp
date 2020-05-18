@@ -41,7 +41,7 @@ void BoardHelper::MakeDoublePiece(BoardPos& position, BoardState& state)
 
 bool BoardHelper::checkIfLegalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state)
 {
-	if(obligatedToTake(originalPos,movePosition,state)){
+	if(obligatedToTake(state)){
 		//check if move being played actually takes a piece.
 		
 	}
@@ -49,7 +49,7 @@ bool BoardHelper::checkIfLegalMove(BoardPos& originalPos, BoardPos& movePosition
 	return false;
 }
 
-bool BoardHelper::obligatedToTake(BoardPos& originalPos, BoardPos& movePosition, BoardState& state) {
+bool BoardHelper::obligatedToTake(BoardState& state) {
 	std::vector<Piece> currentPieces = getCurrentlyUsedPieces(state);
 	
 	for (Piece piece : currentPieces) {

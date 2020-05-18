@@ -10,7 +10,7 @@ int main()
     BoardPos bp = BoardPos(0, 0);
 	BoardPos bp2 = BoardPos(5, 7);
 	state.printBoard();
-	 bool check = h.obligatedToTake(bp2, bp, state);
+	 bool check = h.obligatedToTake(state);
 	//h.checkIfLegalMove(bp, bp2, state);
 }
 
