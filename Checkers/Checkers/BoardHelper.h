@@ -9,6 +9,10 @@ public:
 	void RemovePiece(BoardPos& position, BoardState& state);
 	void MakeDoublePiece(BoardPos& position, BoardState& state);
 	bool checkIfLegalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state);
+	bool checkForCorrectNormalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state);
+	bool checkIfPieceToMoveIsCorrectColor(BoardPos& originalPos, BoardState& state);
+	bool checkIfDestinationIsEmpty(BoardPos& movePosition, BoardState& state);
+	bool checkIfLegalNormalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state);
 	bool obligatedToTake(BoardState& state);
 
 private:

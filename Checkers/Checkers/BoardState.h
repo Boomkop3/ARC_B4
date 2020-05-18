@@ -18,6 +18,8 @@ public:
 	bool checkGameFinished();
 	BoardPos* getSingleBoardPos(int x, int y);
 
+	Piece* getSinglePiece(int xPos, int yPos);
+
 	//attributes
 	bool whiteToMove = true;
 	bool gameFinished;

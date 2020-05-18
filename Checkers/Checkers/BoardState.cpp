@@ -87,7 +87,7 @@ void BoardState::placeStartPieces()
 
 	//test!!!! haal deze weg !!!!
 	//pieces.push_back(Piece(Piece::White, *getSingleBoardPos(4, 6)));
-	pieces.push_back(Piece(Piece::Black, *getSingleBoardPos(3, 3)));
+	//pieces.push_back(Piece(Piece::Black, *getSingleBoardPos(3, 3)));
 }
 
 void BoardState::updatePiecesOnBoardPositions()
@@ -115,6 +115,16 @@ void BoardState::updatePiecesOnBoardPositions()
 BoardPos* BoardState::getSingleBoardPos(int x, int y)
 {
 	return &boardPositions.at(x).at(y);
+}
+
+Piece* BoardState::getSinglePiece(int xPos, int yPos) {
+	for (Piece p : pieces) {
+		if (p.position.getX() == xPos && p.position.getY() == yPos)
+		{
+			return &p;
+		}
+	}
+	return nullptr;
 }
 
 void BoardState::printBoard()
