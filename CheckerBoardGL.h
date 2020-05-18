@@ -7,6 +7,7 @@
 #include "tigl.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "cuboid.h"
+#include "cylinder.h"
 #include "Pyramid.h"
 #include "Prism.h"
 #include "GLShape.h"
@@ -23,6 +24,7 @@ class CheckerBoardGL {
 public:
 	CheckerBoardGL(std::shared_ptr<std::vector<tigl::Vertex>> buffer, std::shared_ptr<std::vector<glm::vec3>> vertices_in, std::shared_ptr<std::vector<glm::vec3>> indices_in);
 	~CheckerBoardGL();
+	void addPieces();
 	void create_board();
 	glm::vec3 GetCoordinateFor(int row, int column); /// Gets the center of the given square > 1 based index
 	glm::vec3 GetBoardCenter(); /// Gets the center of the surface the board

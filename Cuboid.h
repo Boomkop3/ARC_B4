@@ -16,7 +16,6 @@ public:
 	Cuboid();
 	Cuboid(double, double, double);
 	void get_indices(std::vector<glm::vec3>& vertices_out, std::vector<glm::vec3>& indices_out) const override;
-
 	const static int vertices_count = 8;
 	const static int indices_count = 24; // 36 when using triangles
 };

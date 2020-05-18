@@ -16,8 +16,16 @@ CheckerBoardGL::~CheckerBoardGL()
 
 }
 
+void CheckerBoardGL::addPieces() {
+	auto cylinder = std::make_shared<Cylinder>();
+	auto indices_types = new std::vector<std::tuple<glm::vec3, int>>;
+	cylinder->get_geometry(*indices_types);
+}
+
 void CheckerBoardGL::create_board()
 {
+	addPieces();
+
 	int textureToggle = 0;
 	std::shared_ptr<TextureAtlas> textureAtlas = std::make_shared<TextureAtlas>(64, 64, 2, 2);
 

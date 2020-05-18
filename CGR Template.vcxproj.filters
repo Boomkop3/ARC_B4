@@ -261,7 +261,7 @@
       <Filter>Header Files\engine\shapes</Filter>
     </ClInclude>
     <ClInclude Include="AdvancedShape.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\engine\shapes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

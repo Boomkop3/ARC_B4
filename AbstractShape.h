@@ -1,4 +1,10 @@
 #pragma once
+#include <iostream>
+#include <sstream>
+#include "utils.h"
+#include "tigl.h"
+#include <glm/gtc/matrix_transform.hpp>
+
 class AbstractShape
 {
 public:
