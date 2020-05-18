@@ -9,7 +9,7 @@ public:
 	void RemovePiece(BoardPos& position, BoardState& state);
 	void MakeDoublePiece(BoardPos& position, BoardState& state);
 	bool checkIfLegalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state);
-	bool obligatedToTake(BoardPos& originalPos, BoardPos& movePosition, BoardState& state);
+	bool obligatedToTake(BoardState& state);
 
 private:
 	std::vector<Piece> getCurrentlyUsedPieces(BoardState& state);
