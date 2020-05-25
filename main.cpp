@@ -251,6 +251,15 @@ void create_checkerboard() {
 	gCamera->translation.y = -centerPos.y;
 	gCamera->translation.z = -centerPos.z;
 
+	tigl::shader->enableLighting(true);
+	tigl::shader->setLightCount(1);
+	tigl::shader->setLightPosition(0, centerPos);
+	tigl::shader->setLightDirectional(0, false);
+	tigl::shader->setLightAmbient(0, glm::vec3(.5f, .5f, .5f));
+	tigl::shader->setLightDiffuse(0, glm::vec3(.6f, .6f, .6f));
+	tigl::shader->setLightSpecular(0, glm::vec3(1.f, .8f, .4f));
+	tigl::shader->setShinyness(.5f);
+
 	gCamera->setStartGamePosition();
 }
 
