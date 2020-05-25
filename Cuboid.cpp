@@ -22,14 +22,14 @@ void Cuboid::get_indices(std::vector<glm::vec3>& vertices_out, std::vector<glm::
 {
 	vertices_out.resize(Cuboid::vertices_count);
 	//Vertices centered
-	vertices_out[A] = glm::vec3(-(this->get_width() / 2.), -(this->get_height() / 2.), this->get_depth() / 2.);			// A
-	vertices_out[B] = glm::vec3(this->get_width() / 2., -(this->get_height() / 2.), this->get_depth() / 2.);			// B
-	vertices_out[C] = glm::vec3(-(this->get_width() / 2.), this->get_height() / 2., this->get_depth() / 2.);			// C
-	vertices_out[D] = glm::vec3(this->get_width() / 2., this->get_height() / 2., this->get_depth() / 2.);				// D
-	vertices_out[E] = glm::vec3(-(this->get_width() / 2.), -(this->get_height() / 2.), -(this->get_depth() / 2.));		// E
-	vertices_out[F] = glm::vec3(this->get_width() / 2., -(this->get_height() / 2.), -(this->get_depth() / 2.));			// F
-	vertices_out[G] = glm::vec3(-(this->get_width() / 2.), this->get_height() / 2., -(this->get_depth() / 2.));			// G
-	vertices_out[H] = glm::vec3(this->get_width() / 2., this->get_height() / 2., -(this->get_depth() / 2.));			// H
+	vertices_out[A] = glm::vec3(-(this->get_width() / 2.), -(this->get_height() / 2.), this->get_depth() / 2.);		// A
+	vertices_out[B] = glm::vec3(this->get_width() / 2., -(this->get_height() / 2.), this->get_depth() / 2.);		// B
+	vertices_out[C] = glm::vec3(-(this->get_width() / 2.), this->get_height() / 2., this->get_depth() / 2.);		// C
+	vertices_out[D] = glm::vec3(this->get_width() / 2., this->get_height() / 2., this->get_depth() / 2.);			// D
+	vertices_out[E] = glm::vec3(-(this->get_width() / 2.), -(this->get_height() / 2.), -(this->get_depth() / 2.));	// E
+	vertices_out[F] = glm::vec3(this->get_width() / 2., -(this->get_height() / 2.), -(this->get_depth() / 2.));		// F
+	vertices_out[G] = glm::vec3(-(this->get_width() / 2.), this->get_height() / 2., -(this->get_depth() / 2.));		// G
+	vertices_out[H] = glm::vec3(this->get_width() / 2., this->get_height() / 2., -(this->get_depth() / 2.));		// H
 
 	indices_out.resize(Cuboid::indices_count);
 	//CABD
