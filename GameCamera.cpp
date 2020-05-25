@@ -143,6 +143,7 @@ void GameCamera::setPlayer2Cam() {
 
 void GameCamera::setStartGamePosition() {
 	rotX = PI / 2.;
+	rotY = 0;
 	radius = 1.;
 	this->targetRadius = 11.3;
 }
