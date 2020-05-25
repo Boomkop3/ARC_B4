@@ -6,6 +6,7 @@ Piece::Piece(PieceColor pieceColor, BoardPos boardPosition)
 	color = pieceColor;
 	position = boardPosition;
 	isDoublePiece = false;
+	id = id_counter++;
 }
 
 void Piece::makeDoublePiece()

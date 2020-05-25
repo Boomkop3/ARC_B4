@@ -9,7 +9,7 @@ int main()
     BoardHelper h;
     BoardPos bp = BoardPos(1, 1);
 	BoardPos bp2 = BoardPos(5, 5);
-	state.addPieceToPosition(1, 1, Piece::White, true);
+	//state.addPieceToPosition(1, 1, Piece::White, true);
 	//state.addPieceToPosition(3, 3, Piece::Black, false);
 	
 	state.printBoard();

@@ -6,7 +6,7 @@ BoardState::BoardState()
 	initializeBoardPositions();
 
 	//add pieces to board
-	//placeStartPieces();
+	placeStartPieces();
 	updatePiecesOnBoardPositions();
 }
 

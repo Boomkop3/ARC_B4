@@ -1,14 +1,18 @@
 #pragma once
 #include "BoardPos.h"
+static int id_counter = 0;
+
 class Piece
 {
-	bool isDoublePiece;
+	
 public:
 	//attributes
 	enum PieceColor {White, Black};
 	PieceColor color;
 	BoardPos position;
-	
+	bool isDoublePiece;
+	int id;
+
 	//functions
 	Piece(PieceColor pieceColor, BoardPos boardPosition);
 	void makeDoublePiece();
