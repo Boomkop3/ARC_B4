@@ -16,6 +16,9 @@ public:
 	void updatePiecesOnBoardPositions();
 	void printBoard();
 	bool checkGameFinished();
+
+	void addPieceToPosition(int x, int y, Piece::PieceColor, bool isDouble);
+
 	BoardPos* getSingleBoardPos(int x, int y);
 
 	Piece* getSinglePiece(int xPos, int yPos);
@@ -33,6 +36,8 @@ private:
 	//functions
 	void initializeBoardPositions();
 	void placeStartPieces();
+
+	
 	
 	
 	

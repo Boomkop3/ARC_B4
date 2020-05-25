@@ -5,11 +5,13 @@
 int main()
 {
     BoardState state;
-	state.whiteToMove = false;
     //b.printBoard();
     BoardHelper h;
-    BoardPos bp = BoardPos(1, 5);
-	BoardPos bp2 = BoardPos(0, 4);
+    BoardPos bp = BoardPos(1, 1);
+	BoardPos bp2 = BoardPos(5, 5);
+	state.addPieceToPosition(1, 1, Piece::White, true);
+	//state.addPieceToPosition(3, 3, Piece::Black, false);
+	
 	state.printBoard();
 	//state.whiteToMove = false;
 	bool check = h.checkIfLegalMove(bp, bp2, state);

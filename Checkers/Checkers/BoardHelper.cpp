@@ -54,20 +54,133 @@ bool BoardHelper::checkIfLegalMove(BoardPos& originalPos, BoardPos& movePosition
 		return true;
 	}
 	
+	if (checkForCorrectDoublePieceMove(originalPos, movePosition, state))
+	{
+		return true;
+	}
 
 	//check if move is legal
 	return false;
 }
 
-bool BoardHelper::checkForCorrectNormalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state) {
+bool BoardHelper::checkForCorrectDoublePieceMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state) {
 	if (checkIfPieceToMoveIsCorrectColor(originalPos, state) && checkIfDestinationIsEmpty(movePosition, state))
 	{
-		if (checkIfLegalNormalMove(originalPos, movePosition, state)) {
+		if (checkIfLegalDoublePieceMove(originalPos, movePosition, state))
+		{
 			return true;
 		}
 	}
 	return false;
 }
+
+bool BoardHelper::checkIfLegalDoublePieceMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state) {
+	//check if every pos the piece moves over is not occupied
+	
+	int deltaXpos = movePosition.getX() - originalPos.getX();
+	int deltaYpos = movePosition.getY() - originalPos.getY();
+
+	if (deltaXpos == 0 || deltaYpos == 0)
+	{
+		return false;
+	}
+
+	int x = originalPos.getX();
+	int y = originalPos.getY();
+
+	//left up
+	if (deltaXpos < 0 && deltaYpos < 0)
+	{
+		for (int i = 0; i < abs(deltaXpos) - 1; i++)
+		{
+			x -= 1;
+			y -= 1;
+			
+			if (state.getSingleBoardPos(x, y)->checkOccupied() && i != (abs(deltaXpos) - 2)) {
+				return false;
+			}
+			else if (state.getSingleBoardPos(x, y)->checkOccupied() && i == (abs(deltaXpos) - 2)){
+				if (state.getSinglePiece(x, y)->color != state.getSinglePiece(originalPos.getX(), originalPos.getY())->color)
+				{
+					return true;
+				}
+				return false;
+			}
+		}
+		return true;
+	}
+
+	//left down
+	if (deltaXpos < 0 && deltaYpos > 0)
+	{
+		for (int i = 0; i < abs(deltaXpos) - 1; i++)
+		{
+			x -= 1;
+			y += 1;
+
+			if (state.getSingleBoardPos(x, y)->checkOccupied() && i != (abs(deltaXpos) - 2)) {
+				return false;
+			}
+			else if (state.getSingleBoardPos(x, y)->checkOccupied() && i == (abs(deltaXpos) - 2)) {
+				return true;
+			}
+		}
+		return true;
+	}
+
+	//right up
+	if (deltaXpos > 0 && deltaYpos < 0)
+	{
+		for (int i = 0; i < abs(deltaXpos) - 1; i++)
+		{
+			x += 1;
+			y -= 1;
+
+			if (state.getSingleBoardPos(x, y)->checkOccupied() && i != (abs(deltaXpos) - 2)) {
+				return false;
+			}
+			else if (state.getSingleBoardPos(x, y)->checkOccupied() && i == (abs(deltaXpos) - 2)) {
+				return true;
+			}
+		}
+		return true;
+	}
+
+	//right down
+	if (deltaXpos > 0 && deltaYpos > 0)
+	{
+		for (int i = 0; i < abs(deltaXpos) - 1; i++)
+		{
+			x += 1;
+			y += 1;
+
+			if (state.getSingleBoardPos(x, y)->checkOccupied() && i != (abs(deltaXpos) - 2)) {
+				return false;
+			}
+			else if (state.getSingleBoardPos(x, y)->checkOccupied() && i == (abs(deltaXpos) - 2)) {
+				return true;
+			}
+		}
+		return true;
+	}
+
+	return false;
+}
+
+bool BoardHelper::checkForCorrectNormalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state) {
+	if (!(state.getSinglePiece(originalPos.getX(), originalPos.getY())->getIsDoublePiece()));
+	{
+		if (checkIfPieceToMoveIsCorrectColor(originalPos, state) && checkIfDestinationIsEmpty(movePosition, state))
+		{
+			if (checkIfLegalNormalMove(originalPos, movePosition, state)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 
 bool BoardHelper::checkIfPieceToMoveIsCorrectColor(BoardPos& originalPos, BoardState& state) {
 	Piece::PieceColor colorToMove = Piece::Black;
