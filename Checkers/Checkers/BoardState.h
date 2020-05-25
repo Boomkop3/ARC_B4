@@ -17,6 +17,8 @@ public:
 	void printBoard();
 	bool checkGameFinished();
 
+	int getBoardSize();
+
 	void addPieceToPosition(int x, int y, Piece::PieceColor, bool isDouble);
 
 	BoardPos* getSingleBoardPos(int x, int y);

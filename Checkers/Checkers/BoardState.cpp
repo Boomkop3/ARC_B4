@@ -6,7 +6,7 @@ BoardState::BoardState()
 	initializeBoardPositions();
 
 	//add pieces to board
-	placeStartPieces();
+	//placeStartPieces();
 	updatePiecesOnBoardPositions();
 }
 
@@ -174,6 +174,11 @@ void BoardState::printBoard()
 bool BoardState::checkGameFinished()
 {
 	return false;
+}
+
+int BoardState::getBoardSize()
+{
+	return boardSize;
 }
 
 

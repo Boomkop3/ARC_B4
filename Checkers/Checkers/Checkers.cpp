@@ -5,12 +5,14 @@
 int main()
 {
     BoardState state;
+	state.whiteToMove = true;
     //b.printBoard();
     BoardHelper h;
-    BoardPos bp = BoardPos(1, 1);
-	BoardPos bp2 = BoardPos(5, 5);
-	//state.addPieceToPosition(1, 1, Piece::White, true);
-	//state.addPieceToPosition(3, 3, Piece::Black, false);
+    BoardPos bp = BoardPos(4, 4);
+	BoardPos bp2 = BoardPos(1, 1);
+	state.addPieceToPosition(4, 4, Piece::White, true);
+	state.addPieceToPosition(2, 2, Piece::Black, false);
+
 	
 	state.printBoard();
 	//state.whiteToMove = false;

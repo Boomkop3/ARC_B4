@@ -17,13 +17,19 @@ public:
 	bool checkIfLegalNormalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state);
 	bool obligatedToTake(BoardState& state);
 
+	enum directions { LEFTUP, RIGHTUP, LEFTDOWN, RIGHTDOWN };
+
 private:
 	std::vector<Piece> getCurrentlyUsedPieces(BoardState& state);
 	bool checkIfPieceCanTake(Piece piece, BoardState& state);
+	bool checkDircectionDoublePieceCanTake(Piece piece, BoardState& state, BoardHelper::directions direction);
+	bool checkDirectionSinglePieceCanTake(Piece piece, BoardState& state, BoardHelper::directions direction);
 	bool checkLeftUp(Piece piece, BoardState& state);
 	bool checkRightUp(Piece piece, BoardState& state);
 	bool checkLeftDown(Piece piece, BoardState& state);
 	bool checkRightDown(Piece piece, BoardState& state);
+	
+	
 };
 
 
