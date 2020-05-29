@@ -17,7 +17,7 @@ public:
 	Piece(PieceColor pieceColor, BoardPos boardPosition);
 	void makeDoublePiece();
 	bool getIsDoublePiece();
-
-
+	void updatePosition(BoardPos boardpos);
+	void updatePosition(int x, int y);
 };
 

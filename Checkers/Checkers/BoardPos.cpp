@@ -1,9 +1,9 @@
 #include "BoardPos.h"
 
 BoardPos::BoardPos() {
-	//code werkt niet zonder deze default constructor, laat deze dus staan!!!
-	x = 999;
-	y = 999;
+	//wanneer opgehaalde values de onderstaande zijn betekend dit dat er een valse positie is. (deze moet dus nog worden veranderd)
+	x = -1;
+	y = -1;
 	isOccupied = false;
 }
 

@@ -18,3 +18,12 @@ bool Piece::getIsDoublePiece()
 {
 	return isDoublePiece;
 }
+
+void Piece::updatePosition(BoardPos boardpos) {
+	position = boardpos;
+}
+
+void Piece::updatePosition(int x, int y) {
+	position = BoardPos(x,y);
+}
+

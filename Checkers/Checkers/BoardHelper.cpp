@@ -40,16 +40,27 @@ void BoardHelper::MakeDoublePiece(BoardPos& position, BoardState& state)
 }
 
 BoardHelper::checkerstate BoardHelper::makeMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state) {
+	BoardPos potentialTakePosition = BoardPos();
 	
-	if (checkIfLegalMove(originalPos, movePosition, state)) {
-		//make move on board
+	if (checkIfLegalMove(originalPos, movePosition, state, potentialTakePosition)) {
 		
+		//make move if legal
+		Piece* piece = state.getSinglePiece(originalPos);
+		piece->updatePosition(movePosition);
+		//state.getSinglePiece(originalPos)->updatePosition(movePosition);
+		
+		//remove piece if neccesary
+		if (potentialTakePosition.getX() != -1 || potentialTakePosition.getY() != -1) {
+			RemovePiece(potentialTakePosition, state);
+		}
+		//update board with changes
+		state.updateBoard();
 
 		//promote piece if allowed
-		Piece& piece = *(state.getSinglePiece(originalPos));
-		if (checkIfPieceCanPromote(piece)) {
-			piece.makeDoublePiece();
+		if (checkIfPieceCanPromote(*(state.getSinglePiece(originalPos)))) {
+			state.getSinglePiece(originalPos)->makeDoublePiece();
 		}
+
 
 		//check if game has ended
 		if (state.checkGameFinished()) {
@@ -66,19 +77,19 @@ BoardHelper::checkerstate BoardHelper::makeMove(BoardPos& originalPos, BoardPos&
 	}
 }
 
-bool BoardHelper::checkIfLegalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state)
+bool BoardHelper::checkIfLegalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state, BoardPos& positionToTake)
 {
 	if (state.getSinglePiece(originalPos.getX(), originalPos.getY()) == nullptr)
 	{
 		return false;
 	}
 
-	if(obligatedToTake(state)){
+	if(obligatedToTake(state, positionToTake)){
 		//check if position to move to is not already occupied
 		if (checkIfPieceToMoveIsCorrectColor(originalPos, state) && checkIfDestinationIsEmpty(movePosition, state)) {
 			//check if move being played actually takes a piece.
 			if (state.getSingleBoardPos(originalPos.getX(), originalPos.getY())->checkOccupied()) {
-				if (checkIfPieceCanTake(*(state.getSinglePiece(originalPos)), state)) {
+				if (checkIfPieceCanTake(*(state.getSinglePiece(originalPos)), state, positionToTake)) {
 					return true;
 				}
 			}
@@ -273,11 +284,11 @@ bool BoardHelper::checkIfLegalNormalMove(BoardPos& originalPos, BoardPos& movePo
 	return false;
 }
 
-bool BoardHelper::obligatedToTake(BoardState& state) {
+bool BoardHelper::obligatedToTake(BoardState& state, BoardPos& positionToTake) {
 	std::vector<Piece> currentPieces = getCurrentlyUsedPieces(state);
 	
 	for (Piece piece : currentPieces) {
-		if (checkIfPieceCanTake(piece, state)) {
+		if (checkIfPieceCanTake(piece, state, positionToTake)) {
 			if (piece.color == 0) {
 				std::cout << "white must take a piece" << std::endl;
 			}
@@ -307,9 +318,9 @@ std::vector<Piece> BoardHelper::getCurrentlyUsedPieces(BoardState& state) {
 	return currentPieces;
 }
 
-bool BoardHelper::checkIfPieceCanTake(Piece piece, BoardState& state) {
+bool BoardHelper::checkIfPieceCanTake(Piece piece, BoardState& state, BoardPos& positionToTake) {
 	if (!(piece.getIsDoublePiece())) { // single piece
-		if (checkDirectionSinglePieceCanTake(piece, state, LEFTUP) || checkDirectionSinglePieceCanTake(piece, state, RIGHTUP) || checkDirectionSinglePieceCanTake(piece, state, LEFTDOWN) || checkDirectionSinglePieceCanTake(piece, state, RIGHTDOWN)) {
+		if (checkDirectionSinglePieceCanTake(piece, state, LEFTUP, positionToTake) || checkDirectionSinglePieceCanTake(piece, state, RIGHTUP, positionToTake) || checkDirectionSinglePieceCanTake(piece, state, LEFTDOWN, positionToTake) || checkDirectionSinglePieceCanTake(piece, state, RIGHTDOWN, positionToTake)) {
 			return true;
 		}
 		else {
@@ -317,7 +328,7 @@ bool BoardHelper::checkIfPieceCanTake(Piece piece, BoardState& state) {
 		}
 	}
 	else { // double piece
-		if (checkDircectionDoublePieceCanTake(piece, state, LEFTUP) || checkDircectionDoublePieceCanTake(piece, state, RIGHTUP) || checkDircectionDoublePieceCanTake(piece, state, LEFTDOWN) || checkDircectionDoublePieceCanTake(piece, state, RIGHTDOWN))
+		if (checkDircectionDoublePieceCanTake(piece, state, LEFTUP, positionToTake) || checkDircectionDoublePieceCanTake(piece, state, RIGHTUP, positionToTake) || checkDircectionDoublePieceCanTake(piece, state, LEFTDOWN, positionToTake) || checkDircectionDoublePieceCanTake(piece, state, RIGHTDOWN, positionToTake))
 		{
 			return true;
 		}
@@ -330,7 +341,7 @@ bool BoardHelper::checkIfPieceCanTake(Piece piece, BoardState& state) {
 
 }
 
-bool BoardHelper::checkDircectionDoublePieceCanTake(Piece piece, BoardState& state, BoardHelper::directions direction) {
+bool BoardHelper::checkDircectionDoublePieceCanTake(Piece piece, BoardState& state, BoardHelper::directions direction, BoardPos& positionToTake) {
 	int x = piece.position.getX();
 	int y = piece.position.getY();
 	int xToCheck = x;
@@ -339,7 +350,7 @@ bool BoardHelper::checkDircectionDoublePieceCanTake(Piece piece, BoardState& sta
 	
 
 	try {
-
+		BoardPos potentialTakePos;
 		for (int i = 0; i < state.getBoardSize(); i++) {
 			switch (direction)
 			{
@@ -363,6 +374,7 @@ bool BoardHelper::checkDircectionDoublePieceCanTake(Piece piece, BoardState& sta
 				break;
 			}
 
+			
 			BoardPos* pos = state.getSingleBoardPos(xToCheck, yToCheck);
 
 			if (pos->checkOccupied())
@@ -376,13 +388,14 @@ bool BoardHelper::checkDircectionDoublePieceCanTake(Piece piece, BoardState& sta
 						return false;
 					}
 					foundOpposingPiece = true;
+					potentialTakePos = *pos;
 				}
 			}
 			else {
 				if (foundOpposingPiece)
 				{
+					positionToTake = potentialTakePos;
 					return true;
-
 				}
 			}
 		}
@@ -393,7 +406,7 @@ bool BoardHelper::checkDircectionDoublePieceCanTake(Piece piece, BoardState& sta
 	}
 }
 
-bool BoardHelper::checkDirectionSinglePieceCanTake(Piece piece, BoardState& state, BoardHelper::directions direction) {
+bool BoardHelper::checkDirectionSinglePieceCanTake(Piece piece, BoardState& state, BoardHelper::directions direction , BoardPos& positionToTake) {
 	int x = piece.position.getX();
 	int y = piece.position.getY();
 	int xToCheck, yToCheck;
@@ -444,9 +457,10 @@ bool BoardHelper::checkDirectionSinglePieceCanTake(Piece piece, BoardState& stat
 					default:
 						break;
 					}
-
+					BoardPos previousPos = *currentPos;
 					currentPos = state.getSingleBoardPos(xToCheck, yToCheck);
 					if (!(currentPos->checkOccupied())) {
+						positionToTake = previousPos;
 						return true;
 					}
 				}

@@ -9,6 +9,7 @@ class BoardState
 public:
 	//constructor
 	BoardState();
+	void updateBoard();
 	//functions
 	std::vector<std::vector<BoardPos>> getBoardPositions();
 	std::vector<Piece> getPieces();

@@ -10,6 +10,11 @@ BoardState::BoardState()
 	updatePiecesOnBoardPositions();
 }
 
+void BoardState::updateBoard() {
+	//do all updates
+	updatePiecesOnBoardPositions();
+}
+
 std::vector<std::vector<BoardPos>> BoardState::getBoardPositions()
 {
 	return boardPositions;
@@ -194,6 +199,7 @@ int BoardState::getBoardSize()
 
 void BoardState::swapTurn() {
 	whiteToMove = !whiteToMove;
+	std::cout << "white to move: " << whiteToMove << std::endl;
 }
 
 
