@@ -160,6 +160,7 @@
     <ClCompile Include="AbstractShape.cpp" />
     <ClCompile Include="AdvancedShape.cpp" />
     <ClCompile Include="CheckerBoardGL.cpp" />
+    <ClCompile Include="checkerPiece.cpp" />
     <ClCompile Include="ColorGLUnit.cpp" />
     <ClCompile Include="Cuboid.cpp" />
     <ClCompile Include="Cylinder.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="AbstractShape.h" />
     <ClInclude Include="AdvancedShape.h" />
     <ClInclude Include="CheckerBoardGL.h" />
+    <ClInclude Include="checkerPiece.h" />
     <ClInclude Include="ColorGLUnit.h" />
     <ClInclude Include="Cuboid.h" />
     <ClInclude Include="Cylinder.h" />

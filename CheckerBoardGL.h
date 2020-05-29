@@ -19,12 +19,12 @@
 #include "ColorGLUnit.h"
 #include "GLUnit.h"
 #include "GameCamera.h"
+#include "checkerPiece.h"
 
 class CheckerBoardGL {
 public:
 	CheckerBoardGL(std::shared_ptr<std::vector<tigl::Vertex>> buffer, std::shared_ptr<std::vector<glm::vec3>> vertices_in, std::shared_ptr<std::vector<glm::vec3>> indices_in);
 	~CheckerBoardGL();
-	void addPieces();
 	void create_board();
 	glm::vec3 GetCoordinateFor(int row, int column); /// Gets the center of the given square > 1 based index
 	std::shared_ptr<GLObject> GetShapeByCoordinate(int column, int row);
@@ -37,6 +37,8 @@ private:
 	std::shared_ptr<std::vector<glm::vec3>> vertices_in;
 	std::shared_ptr<std::vector<glm::vec3>> indices_in;
 	std::vector<std::shared_ptr<GLObject>> globjects;
+	void addPiece(CheckerPiece::Color color, int x, int y);
+	void addPieces();
 };
 
 inline double getPartialCoordinateFor(int rowOrCol);

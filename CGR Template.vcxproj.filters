@@ -171,6 +171,9 @@
     <ClCompile Include="AdvancedShape.cpp">
       <Filter>Source Files\engine\shapes</Filter>
     </ClCompile>
+    <ClCompile Include="checkerPiece.cpp">
+      <Filter>Source Files\game\checkers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cuboid.h">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="AdvancedShape.h">
       <Filter>Header Files\engine\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="checkerPiece.h">
+      <Filter>Header Files\game\checkers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

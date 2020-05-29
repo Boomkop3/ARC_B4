@@ -3,6 +3,7 @@
 #define BOARD_SIZE 8
 #define CUBOID_SIZE 1.0
 #define BOARD_HEIGHT 0.25
+#define BOARD_FLOOR -0.5
 
 const auto defaultCheckersTexture = std::make_shared<TextureAtlas>(64, 96, 2, 3);
 
@@ -18,25 +19,28 @@ CheckerBoardGL::~CheckerBoardGL()
 
 }
 
-void CheckerBoardGL::addPieces() {
-	std::shared_ptr<GLShape> sharedShape = std::make_shared<GLShape>(
-		std::make_shared<Cylinder>(1, 0.25, 1)
+void CheckerBoardGL::addPiece(CheckerPiece::Color color, int x, int y) {
+	std::shared_ptr<CheckerPiece> piece = std::make_shared<CheckerPiece>(
+		this->buffer,
+		this->vertices_in,
+		this->indices_in,
+		defaultCheckersTexture,
+		color,
+		false,
+		BOARD_SIZE,
+		CUBOID_SIZE,
+		x,
+		y,
+		BOARD_FLOOR
 	);
-	sharedShape->init_draw(this->buffer, this->vertices_in, this->indices_in);
-	std::shared_ptr<GLObject> sharedGLObject = std::make_shared<GLObject>();
-	sharedGLObject->setDrawGLUnit(sharedShape);
-	sharedGLObject->position = glm::vec3(0, 0, 0);
-	sharedGLObject->rotation = glm::vec3(0, 0, 0); // prevent unpredictable behaviour
+	this->globjects.push_back(piece->getGlObject());
+}
 
-	std::shared_ptr<TextureAtlas> textureAtlas = defaultCheckersTexture;
-
-	std::shared_ptr<TextureColorComboGLUnit> pieceDecoration = std::make_shared<TextureColorComboGLUnit>();
-	pieceDecoration->set_texture_color_filter(0.2f, 0.2f, 0.2f, 1.0f); // Apply R G B A filter on top of object
-	pieceDecoration->set_texture_atlas(textureAtlas);
-	pieceDecoration->set_texture_atlas_coords(2, 1);
-	sharedGLObject->setDecorationGLUnit(pieceDecoration);
-
-	this->globjects.push_back(sharedGLObject);
+void CheckerBoardGL::addPieces() {
+	for (size_t i = 0; i < BOARD_SIZE; i++)
+	{
+		// Gotta go
+	}
 }
 
 void CheckerBoardGL::create_board()
