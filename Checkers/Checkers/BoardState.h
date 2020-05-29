@@ -19,11 +19,15 @@ public:
 
 	int getBoardSize();
 
+	void swapTurn();
+
 	void addPieceToPosition(int x, int y, Piece::PieceColor, bool isDouble);
 
 	BoardPos* getSingleBoardPos(int x, int y);
 
 	Piece* getSinglePiece(int xPos, int yPos);
+
+	Piece* getSinglePiece(BoardPos& boardPos);
 
 	//attributes
 	bool whiteToMove = true;

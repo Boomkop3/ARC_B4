@@ -16,7 +16,7 @@ int main()
 	
 	state.printBoard();
 	//state.whiteToMove = false;
-	bool check = h.checkIfLegalMove(bp, bp2, state);
+	BoardHelper::checkerstate yeet = h.makeMove(bp, bp2, state);
 	//h.checkIfLegalMove(bp, bp2, state);
 }
 

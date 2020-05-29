@@ -39,24 +39,58 @@ void BoardHelper::MakeDoublePiece(BoardPos& position, BoardState& state)
 	}
 }
 
-bool BoardHelper::checkIfLegalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state)
-{
-	if(obligatedToTake(state)){
-		//check if move being played actually takes a piece.
-		
-	}
+BoardHelper::checkerstate BoardHelper::makeMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state) {
 	
-		if (state.getSinglePiece(originalPos.getX(), originalPos.getY()) == nullptr)
-		{
-			return false;
+	if (checkIfLegalMove(originalPos, movePosition, state)) {
+		//make move on board
+		
+
+		//promote piece if allowed
+		Piece& piece = *(state.getSinglePiece(originalPos));
+		if (checkIfPieceCanPromote(piece)) {
+			piece.makeDoublePiece();
 		}
 
+		//check if game has ended
+		if (state.checkGameFinished()) {
+			return  BoardHelper::checkerstate::GAMECOMPLETED;
+		}
+
+		//end of player's turn
+		state.swapTurn();
+		return BoardHelper::checkerstate::VALIDMOVE;
+	}
+	else {
+		//dont make move on board
+		return BoardHelper::checkerstate::INVALIDMOVE;
+	}
+}
+
+bool BoardHelper::checkIfLegalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state)
+{
+	if (state.getSinglePiece(originalPos.getX(), originalPos.getY()) == nullptr)
+	{
+		return false;
+	}
+
+	if(obligatedToTake(state)){
+		//check if position to move to is not already occupied
+		if (checkIfPieceToMoveIsCorrectColor(originalPos, state) && checkIfDestinationIsEmpty(movePosition, state)) {
+			//check if move being played actually takes a piece.
+			if (state.getSingleBoardPos(originalPos.getX(), originalPos.getY())->checkOccupied()) {
+				if (checkIfPieceCanTake(*(state.getSinglePiece(originalPos)), state)) {
+					return true;
+				}
+			}
+		}
+		
+		
+		return false;
+	}
+	
 		if(!(state.getSinglePiece(originalPos.getX(), originalPos.getY())->getIsDoublePiece())) {
 			if (checkForCorrectNormalMove(originalPos, movePosition, state))
 			{
-				//check if moved piece is yours
-				//check if destination is not occupied
-				//check if move is not a bs move
 				return true;
 			}
 		}
@@ -66,8 +100,6 @@ bool BoardHelper::checkIfLegalMove(BoardPos& originalPos, BoardPos& movePosition
 				return true;
 			}
 		}
-	
-	
 	
 	return false;
 }
@@ -540,5 +572,16 @@ bool BoardHelper::checkRightDown(Piece piece, BoardState& state) {
 		//empty catch to continue with other checks
 		return false;
 	}
+	return false;
+}
+
+bool BoardHelper::checkIfPieceCanPromote(Piece piece) {
+	if (piece.color == Piece::White && piece.position.getY() == 7) {
+		return true;
+	}
+	else if (piece.color == Piece::Black && piece.position.getY() == 0) {
+		return true;
+	}
+
 	return false;
 }

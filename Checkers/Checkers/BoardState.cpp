@@ -133,6 +133,17 @@ Piece* BoardState::getSinglePiece(int xPos, int yPos) {
 	return nullptr;
 }
 
+Piece* BoardState::getSinglePiece(BoardPos& boardPos) {
+	for (Piece p : pieces) {
+		if (p.position.getX() == boardPos.getX() && p.position.getY() == boardPos.getY())
+		{
+			return &p;
+		}
+	}
+	return nullptr;
+}
+
+
 void BoardState::printBoard()
 {
 	char board[64] = { ' ' };
@@ -179,6 +190,10 @@ bool BoardState::checkGameFinished()
 int BoardState::getBoardSize()
 {
 	return boardSize;
+}
+
+void BoardState::swapTurn() {
+	whiteToMove = !whiteToMove;
 }
 
 
