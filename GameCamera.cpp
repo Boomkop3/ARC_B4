@@ -18,7 +18,7 @@ glm::mat4 GameCamera::getMatrix()
 
 	glm::mat4 viewMat = glm::lookAt(
 		glm::vec3(camX, 0, camZ) + viewPosOrTargetPos,
-		glm::vec3(0,0,0),
+		glm::vec3(0, 0, 0),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 	viewMat = glm::rotate(viewMat, (float)rotX, glm::vec3(1, 0, 0));
 	viewMat = glm::translate(viewMat, glm::vec3(this->translation.x, this->translation.y, this->translation.z));
@@ -31,40 +31,57 @@ void GameCamera::move(float angle, float fac)
 	position.z += (float)sin(rotation.y + glm::radians(angle)) * fac;
 }
 
-static double rotY=0;
+static double rotY = 0;
 static double radius = 10;
-void GameCamera::update2(GLFWwindow* window)
+
+void GameCamera::rotateToLeft() {
+	rotY -= .02;
+}
+
+void GameCamera::rotateToRight() {
+	rotY += .02;
+}
+
+void GameCamera::rotateToBottom() {
+	rotX += .02f;
+}
+
+void GameCamera::rotateToTop() {
+	rotX -= .02f;
+}
+
+void GameCamera::decreaseRadius() {
+	radius -= .1;
+}
+
+void GameCamera::increaseRadius() {
+	radius += .1;
+}
+
+
+void GameCamera::checkKeyboardInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		rotY-=.02;
+		rotateToLeft();
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		rotY+=.02;
+		rotateToRight();
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		rotX += .02f;
+		rotateToBottom();
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		rotX -= .02f;
+		rotateToTop();
 	if (glfwGetKey(window, GLFW_KEY_EQUAL) == GLFW_PRESS)
-		radius-=.1;
+		decreaseRadius();
 	if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS)
-		radius += .1;
+		increaseRadius();
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 		setPlayer1Cam();
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 		setPlayer2Cam();
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
 		setStartGamePosition();
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		this->translation.y -= .02;
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		this->translation.y += .02;
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		this->translation.x += .02;
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		this->translation.x -= .02;
 
 	camX = sin(rotY) * radius;
 	camZ = cos(rotY) * radius;
-
 
 	// When escape is pressed the mouse pointer can be locked / unlocked.
 	static bool holdButton = false;
@@ -78,13 +95,13 @@ void GameCamera::update2(GLFWwindow* window)
 	}
 	else if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_RELEASE) {
 		holdButton = false;
-	} 
+	}
 }
 
 void GameCamera::checkTargetRadius() {
 	if (this->targetRadius != -1) {
 		if (radius != targetRadius) {
-			std::cout << "Absolute value" << std::abs(targetRadius - radius) << std::endl; 
+			std::cout << "Absolute value" << std::abs(targetRadius - radius) << std::endl;
 			if (std::abs(targetRadius - radius) > INC_DEC_VALUE_RADIUS) {
 				if (radius > targetRadius)
 					radius -= INC_DEC_VALUE_RADIUS;

@@ -16,7 +16,7 @@ class GameCamera
 public:
 	GameCamera(GLFWwindow*);
 	glm::mat4 getMatrix();
-	void update2(GLFWwindow*);
+	void checkKeyboardInput(GLFWwindow*);
 	void checkTargetRadius();
 	void checkTargetRotation();
 	void setPlayer1Cam();
@@ -30,6 +30,12 @@ private:
 	glm::vec3 rotation = glm::vec3(0, 0, 0);
 	bool mousePointerEnabled = false;
 	void move(float angle, float fac);
+	void rotateToLeft();
+	void rotateToRight();
+	void rotateToBottom();
+	void rotateToTop();
+	void decreaseRadius();
+	void increaseRadius();
 };
 
 
