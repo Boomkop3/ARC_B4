@@ -20,15 +20,17 @@ CheckerPiece::CheckerPiece(std::shared_ptr<std::vector<tigl::Vertex>> buffer, st
 	);
 	sharedGLObject->rotation = glm::vec3(0, 0, 0); // prevent unpredictable behaviour
 
-	// std::shared_ptr<TextureAtlas> textureAtlas = textureAtlas;
-
 	std::shared_ptr<TextureColorComboGLUnit> pieceDecoration = std::make_shared<TextureColorComboGLUnit>();
-	pieceDecoration->set_texture_color_filter(0.2f, 0.2f, 0.2f, 1.0f); // Apply R G B A filter on top of object
 	pieceDecoration->set_texture_atlas(textureAtlas);
-	pieceDecoration->set_texture_atlas_coords(2, 1);
+	if (color == CheckerPiece::WHITE) {
+		pieceDecoration->set_texture_color_filter(1.0f, 1.0f, 1.0f, 1.0f);
+		pieceDecoration->set_texture_atlas_coords(2, 1);
+	}
+	else {
+		pieceDecoration->set_texture_color_filter(0.2f, 0.2f, 0.2f, 1.0f);
+		pieceDecoration->set_texture_atlas_coords(2, 1);
+	}
 	sharedGLObject->setDecorationGLUnit(pieceDecoration);
 
 	this->glObject = sharedGLObject;
-
-	// this->globjects.push_back(sharedGLObject);
 }

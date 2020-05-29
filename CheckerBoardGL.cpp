@@ -37,9 +37,20 @@ void CheckerBoardGL::addPiece(CheckerPiece::Color color, int x, int y) {
 }
 
 void CheckerBoardGL::addPieces() {
-	for (size_t i = 0; i < BOARD_SIZE; i++)
+	// Example: This should be replaced with code that'll use the boardstate
+	for (size_t j = 0; j < 3; j++)
 	{
-		// Gotta go
+		for (size_t i = ((j%2)==0)?1:0; i < BOARD_SIZE; i += 2)
+		{
+			addPiece(CheckerPiece::BLACK, i, j);
+		}
+	}
+	for (size_t j = 0; j < 3; j++)
+	{
+		for (size_t i = j%2; i < BOARD_SIZE; i += 2)
+		{
+			addPiece(CheckerPiece::WHITE, i, j+5);
+		}
 	}
 }
 
