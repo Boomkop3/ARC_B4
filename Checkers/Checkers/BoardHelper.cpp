@@ -47,10 +47,11 @@ BoardHelper::checkerstate BoardHelper::makeMove(BoardPos& originalPos, BoardPos&
 		//make move if legal
 		Piece* piece = state.getSinglePiece(originalPos);
 		piece->updatePosition(movePosition);
+		
 		//state.getSinglePiece(originalPos)->updatePosition(movePosition);
 		
 		//remove piece if neccesary
-		if (potentialTakePosition.getX() != -1 || potentialTakePosition.getY() != -1) {
+		if (potentialTakePosition.getX() != -1 && potentialTakePosition.getY() != -1) {
 			RemovePiece(potentialTakePosition, state);
 		}
 		//update board with changes
@@ -63,7 +64,7 @@ BoardHelper::checkerstate BoardHelper::makeMove(BoardPos& originalPos, BoardPos&
 
 
 		//check if game has ended
-		if (state.checkGameFinished()) {
+		if (state.gameFinished) {
 			return  BoardHelper::checkerstate::GAMECOMPLETED;
 		}
 

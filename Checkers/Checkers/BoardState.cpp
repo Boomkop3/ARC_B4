@@ -13,6 +13,9 @@ BoardState::BoardState()
 void BoardState::updateBoard() {
 	//do all updates
 	updatePiecesOnBoardPositions();
+	if (checkGameFinished()) {
+		gameFinished = true;
+	}
 }
 
 std::vector<std::vector<BoardPos>> BoardState::getBoardPositions()
@@ -189,6 +192,24 @@ void BoardState::printBoard()
 
 bool BoardState::checkGameFinished()
 {
+	int whiteCount = 0;
+	int blackCount = 0;
+	for(Piece piece : pieces)
+	{
+		if (whiteCount > 0 && blackCount > 0) {
+			return false;
+		}
+		if (piece.color == Piece::White) {
+			whiteCount++;
+		}
+		else if (piece.color == Piece::Black) {
+			blackCount++;
+		}
+	}
+	if (whiteCount == 0 || blackCount == 0) {
+		//game has ended if one of the sides does not have pieces left
+		return true;
+	}
 	return false;
 }
 
