@@ -11,7 +11,9 @@ public:
 	//function
 	BoardPos(int xPos, int yPos);
 	int getX();
+	void setX(int x);
 	int getY();
+	void setY(int y);
 	bool checkOccupied();
 	void setOccupied(bool isOccupied);
 	

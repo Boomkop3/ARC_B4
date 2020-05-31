@@ -1,5 +1,6 @@
 #pragma once
 #include "BoardPos.h"
+#include <iostream>
 static int id_counter = 0;
 
 class Piece
@@ -7,17 +8,17 @@ class Piece
 	
 public:
 	//attributes
-	enum PieceColor {White, Black};
+	typedef enum PieceColor {White, Black} PieceColor;
 	PieceColor color;
-	BoardPos position;
+	std::shared_ptr<BoardPos> position;
 	bool isDoublePiece;
 	int id;
 
 	//functions
-	Piece(PieceColor pieceColor, BoardPos boardPosition);
+	Piece(PieceColor pieceColor, std::shared_ptr<BoardPos> boardPosition);
 	void makeDoublePiece();
 	bool getIsDoublePiece();
-	void updatePosition(BoardPos boardpos);
+	//void updatePosition(BoardPos boardpos);
 	void updatePosition(int x, int y);
 };
 

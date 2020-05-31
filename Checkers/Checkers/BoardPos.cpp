@@ -19,9 +19,21 @@ int BoardPos::getX()
 	return x;
 }
 
+void BoardPos::setX(int x)
+{
+	this->x = x;
+}
+
+
+
 int BoardPos::getY()
 {
 	return y;
+}
+
+void BoardPos::setY(int y)
+{
+	this->y = y;
 }
 
 bool BoardPos::checkOccupied()

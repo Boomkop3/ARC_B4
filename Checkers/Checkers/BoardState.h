@@ -11,9 +11,9 @@ public:
 	BoardState();
 	void updateBoard();
 	//functions
-	std::vector<std::vector<BoardPos>> getBoardPositions();
-	std::vector<Piece> getPieces();
-	void setPieces(std::vector<Piece> _pieces);
+	std::shared_ptr<std::vector<std::vector<std::shared_ptr<BoardPos>>>> getBoardPositions();
+	std::shared_ptr<std::vector<std::shared_ptr<Piece>>> getPieces();
+	void setPieces(std::shared_ptr<std::vector<std::shared_ptr<Piece>>> _pieces);
 	void updatePiecesOnBoardPositions();
 	void printBoard();
 	bool checkGameFinished();
@@ -24,11 +24,11 @@ public:
 
 	void addPieceToPosition(int x, int y, Piece::PieceColor, bool isDouble);
 
-	BoardPos* getSingleBoardPos(int x, int y);
+	std::shared_ptr<BoardPos> getSingleBoardPos(int x, int y);
 
-	Piece* getSinglePiece(int xPos, int yPos);
+	std::shared_ptr<Piece> getSinglePiece(int xPos, int yPos);
 
-	Piece* getSinglePiece(BoardPos& boardPos);
+	std::shared_ptr<Piece> getSinglePiece(std::shared_ptr<BoardPos> boardPos);
 
 	//attributes
 	bool whiteToMove = true;
@@ -36,10 +36,9 @@ public:
 private:
 	//attributes
 	const int boardSize = 8;
-	std::vector<std::vector<BoardPos>> boardPositions;
-	std::vector<Piece> pieces;
+	std::shared_ptr<std::vector<std::vector<std::shared_ptr<BoardPos>>>> boardPositions;
+	std::shared_ptr<std::vector<std::shared_ptr<Piece>>> pieces;
 	
-
 	//functions
 	void initializeBoardPositions();
 	void placeStartPieces();

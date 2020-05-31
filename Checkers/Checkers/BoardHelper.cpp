@@ -1,75 +1,62 @@
 #include "BoardHelper.h"
 
-void BoardHelper::RemovePiece(BoardPos& position, BoardState& state)
+void BoardHelper::RemovePiece(std::shared_ptr<BoardPos> position, std::shared_ptr<BoardState> state)
 {
-	//remove piece logic
-	int count = 0;
-	std::vector<Piece> tempPieces = state.getPieces();
-	for (Piece p : tempPieces) {
-		if ((p.position.getX() == position.getX()) && (p.position.getY() == position.getY()))
+	for (int i = 0; i < state->getPieces()->size(); i++) {
+		if (((*state->getPieces())[i]->position->getX() == position->getX()) && ((*state->getPieces())[i]->position->getY() == position->getY()))
 		{
-			tempPieces.erase(tempPieces.begin() + count);
-			
-			state.setPieces(tempPieces);
-			state.updatePiecesOnBoardPositions();
-			std::cout << "Piece removed at: (" << p.position.getX() << ", " << p.position.getY() << ")" << std::endl;
+			std::cout << "Piece will be removed at: (" << (*state->getPieces())[i]->position->getX() << ", " << (*state->getPieces())[i]->position->getY() << ")" << std::endl;
+			std::cout << "Pieces length: " << state->getPieces()->size() << " Current index " << i << std::endl;
+			state->getPieces()->erase(state->getPieces()->begin() + i);
+			state->updatePiecesOnBoardPositions();
 			return;
 		}
-		count++;
-	}
-	std::cout << "no piece found to remove" << std::endl;
-}
-
-void BoardHelper::MakeDoublePiece(BoardPos& position, BoardState& state)
-{
-	//make double piece logic
-	std::vector<Piece> tempPieces = state.getPieces();
-	int count = 0;
-	for (Piece p : tempPieces) {
-		if ((p.position.getX() == position.getX()) && (p.position.getY() == position.getY()))
-		{
-			p.makeDoublePiece();
-			tempPieces.push_back(p);
-			tempPieces.erase(tempPieces.begin() + count);
-			state.setPieces(tempPieces);
-			state.updatePiecesOnBoardPositions();
-			return;
-		}
-		count++;
 	}
 }
 
-BoardHelper::checkerstate BoardHelper::makeMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state) {
-	BoardPos potentialTakePosition = BoardPos();
-	
+void BoardHelper::MakeDoublePiece(std::shared_ptr<BoardPos> position, std::shared_ptr<BoardState> state)
+{
+	for (std::shared_ptr<Piece> p : *state->getPieces()) {
+		if ((p->position->getX() == position->getX()) && (p->position->getY() == position->getY()))
+		{
+			p->makeDoublePiece();
+			state->updatePiecesOnBoardPositions();
+			return;
+		}
+	}
+}
+
+BoardHelper::checkerstate BoardHelper::makeMove(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state) {
+	std::shared_ptr<BoardPos> potentialTakePosition = std::make_shared<BoardPos>();
+
 	if (checkIfLegalMove(originalPos, movePosition, state, potentialTakePosition)) {
-		
+
 		//make move if legal
-		Piece* piece = state.getSinglePiece(originalPos);
-		piece->updatePosition(movePosition);
-		
+		std::shared_ptr<Piece> piece = state->getSinglePiece(originalPos);
+		piece->updatePosition(movePosition->getX(), movePosition->getY());
+
 		//state.getSinglePiece(originalPos)->updatePosition(movePosition);
-		
+		std::cout << piece->id << std::endl;
 		//remove piece if neccesary
-		if (potentialTakePosition.getX() != -1 && potentialTakePosition.getY() != -1) {
+		if (potentialTakePosition->getX() != -1 && potentialTakePosition->getY() != -1) {
 			RemovePiece(potentialTakePosition, state);
 		}
 		//update board with changes
-		state.updateBoard();
+		state->updateBoard();
 
 		//promote piece if allowed
-		if (checkIfPieceCanPromote(*(state.getSinglePiece(originalPos)))) {
-			state.getSinglePiece(originalPos)->makeDoublePiece();
+		if (checkIfPieceCanPromote(state->getSinglePiece(movePosition))) { // Was originalPos
+			state->getSinglePiece(movePosition)->makeDoublePiece();		   // Was originalPos
 		}
 
 
 		//check if game has ended
-		if (state.gameFinished) {
+		if (state->gameFinished) {
 			return  BoardHelper::checkerstate::GAMECOMPLETED;
 		}
 
 		//end of player's turn
-		state.swapTurn();
+		state->swapTurn();
 		return BoardHelper::checkerstate::VALIDMOVE;
 	}
 	else {
@@ -78,45 +65,43 @@ BoardHelper::checkerstate BoardHelper::makeMove(BoardPos& originalPos, BoardPos&
 	}
 }
 
-bool BoardHelper::checkIfLegalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state, BoardPos& positionToTake)
+bool BoardHelper::checkIfLegalMove(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state, std::shared_ptr<BoardPos> positionToTake)
 {
-	if (state.getSinglePiece(originalPos.getX(), originalPos.getY()) == nullptr)
+	if (state->getSinglePiece(originalPos->getX(), originalPos->getY()) == nullptr)
 	{
 		return false;
 	}
 
-	if(obligatedToTake(state, positionToTake)){
+	if (obligatedToTake(state, positionToTake)) {
 		//check if position to move to is not already occupied
 		if (checkIfPieceToMoveIsCorrectColor(originalPos, state) && checkIfDestinationIsEmpty(movePosition, state)) {
 			//check if move being played actually takes a piece.
-			if (state.getSingleBoardPos(originalPos.getX(), originalPos.getY())->checkOccupied()) {
-				if (checkIfPieceCanTake(*(state.getSinglePiece(originalPos)), state, positionToTake)) {
+			if (state->getSingleBoardPos(originalPos->getX(), originalPos->getY())->checkOccupied()) {
+				if (checkIfPieceCanTake(state->getSinglePiece(originalPos), state, positionToTake)) {
 					return true;
 				}
 			}
 		}
-		
-		
 		return false;
 	}
-	
-		if(!(state.getSinglePiece(originalPos.getX(), originalPos.getY())->getIsDoublePiece())) {
-			if (checkForCorrectNormalMove(originalPos, movePosition, state))
-			{
-				return true;
-			}
+
+	if (!(state->getSinglePiece(originalPos->getX(), originalPos->getY())->getIsDoublePiece())) {
+		if (checkForCorrectNormalMove(originalPos, movePosition, state))
+		{
+			return true;
 		}
-		else {
-			if (checkForCorrectDoublePieceMove(originalPos, movePosition, state))
-			{
-				return true;
-			}
+	}
+	else {
+		if (checkForCorrectDoublePieceMove(originalPos, movePosition, state))
+		{
+			return true;
 		}
-	
+	}
+
 	return false;
 }
 
-bool BoardHelper::checkForCorrectDoublePieceMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state) {
+bool BoardHelper::checkForCorrectDoublePieceMove(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state) {
 	if (checkIfPieceToMoveIsCorrectColor(originalPos, state) && checkIfDestinationIsEmpty(movePosition, state))
 	{
 		if (checkIfLegalDoublePieceMove(originalPos, movePosition, state))
@@ -127,19 +112,19 @@ bool BoardHelper::checkForCorrectDoublePieceMove(BoardPos& originalPos, BoardPos
 	return false;
 }
 
-bool BoardHelper::checkIfLegalDoublePieceMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state) {
+bool BoardHelper::checkIfLegalDoublePieceMove(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state) {
 	//check if every pos the piece moves over is not occupied
-	
-	int deltaXpos = movePosition.getX() - originalPos.getX();
-	int deltaYpos = movePosition.getY() - originalPos.getY();
+
+	int deltaXpos = movePosition->getX() - originalPos->getX();
+	int deltaYpos = movePosition->getY() - originalPos->getY();
 
 	if (deltaXpos == 0 || deltaYpos == 0)
 	{
 		return false;
 	}
 
-	int x = originalPos.getX();
-	int y = originalPos.getY();
+	int x = originalPos->getX();
+	int y = originalPos->getY();
 
 	//left up
 	if (deltaXpos < 0 && deltaYpos < 0)
@@ -148,12 +133,12 @@ bool BoardHelper::checkIfLegalDoublePieceMove(BoardPos& originalPos, BoardPos& m
 		{
 			x -= 1;
 			y -= 1;
-			
-			if (state.getSingleBoardPos(x, y)->checkOccupied() && i != abs(deltaXpos) - 2) {
+
+			if (state->getSingleBoardPos(x, y)->checkOccupied() && i != abs(deltaXpos) - 2) {
 				return false;
 			}
-			else if (state.getSingleBoardPos(x, y)->checkOccupied() && i == abs(deltaXpos) - 2){
-				if (state.getSinglePiece(x, y)->color != state.getSinglePiece(originalPos.getX(), originalPos.getY())->color)
+			else if (state->getSingleBoardPos(x, y)->checkOccupied() && i == abs(deltaXpos) - 2) {
+				if (state->getSinglePiece(x, y)->color != state->getSinglePiece(originalPos->getX(), originalPos->getY())->color)
 				{
 					return true;
 				}
@@ -171,10 +156,10 @@ bool BoardHelper::checkIfLegalDoublePieceMove(BoardPos& originalPos, BoardPos& m
 			x -= 1;
 			y += 1;
 
-			if (state.getSingleBoardPos(x, y)->checkOccupied() && i != (abs(deltaXpos) - 2)) {
+			if (state->getSingleBoardPos(x, y)->checkOccupied() && i != (abs(deltaXpos) - 2)) {
 				return false;
 			}
-			else if (state.getSingleBoardPos(x, y)->checkOccupied() && i == (abs(deltaXpos) - 2)) {
+			else if (state->getSingleBoardPos(x, y)->checkOccupied() && i == (abs(deltaXpos) - 2)) {
 				return true;
 			}
 		}
@@ -189,10 +174,10 @@ bool BoardHelper::checkIfLegalDoublePieceMove(BoardPos& originalPos, BoardPos& m
 			x += 1;
 			y -= 1;
 
-			if (state.getSingleBoardPos(x, y)->checkOccupied() && i != (abs(deltaXpos) - 2)) {
+			if (state->getSingleBoardPos(x, y)->checkOccupied() && i != (abs(deltaXpos) - 2)) {
 				return false;
 			}
-			else if (state.getSingleBoardPos(x, y)->checkOccupied() && i == (abs(deltaXpos) - 2)) {
+			else if (state->getSingleBoardPos(x, y)->checkOccupied() && i == (abs(deltaXpos) - 2)) {
 				return true;
 			}
 		}
@@ -207,10 +192,10 @@ bool BoardHelper::checkIfLegalDoublePieceMove(BoardPos& originalPos, BoardPos& m
 			x += 1;
 			y += 1;
 
-			if (state.getSingleBoardPos(x, y)->checkOccupied() && i != (abs(deltaXpos) - 2)) {
+			if (state->getSingleBoardPos(x, y)->checkOccupied() && i != (abs(deltaXpos) - 2)) {
 				return false;
 			}
-			else if (state.getSingleBoardPos(x, y)->checkOccupied() && i == (abs(deltaXpos) - 2)) {
+			else if (state->getSingleBoardPos(x, y)->checkOccupied() && i == (abs(deltaXpos) - 2)) {
 				return true;
 			}
 		}
@@ -220,8 +205,8 @@ bool BoardHelper::checkIfLegalDoublePieceMove(BoardPos& originalPos, BoardPos& m
 	return false;
 }
 
-bool BoardHelper::checkForCorrectNormalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state) {
-	if (!(state.getSinglePiece(originalPos.getX(), originalPos.getY())->getIsDoublePiece()));
+bool BoardHelper::checkForCorrectNormalMove(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state) {
+	if (!(state->getSinglePiece(originalPos->getX(), originalPos->getY())->getIsDoublePiece()));
 	{
 		if (checkIfPieceToMoveIsCorrectColor(originalPos, state) && checkIfDestinationIsEmpty(movePosition, state))
 		{
@@ -235,49 +220,49 @@ bool BoardHelper::checkForCorrectNormalMove(BoardPos& originalPos, BoardPos& mov
 
 
 
-bool BoardHelper::checkIfPieceToMoveIsCorrectColor(BoardPos& originalPos, BoardState& state) {
+bool BoardHelper::checkIfPieceToMoveIsCorrectColor(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardState> state) {
 	Piece::PieceColor colorToMove = Piece::Black;
-	if (state.whiteToMove)
+	if (state->whiteToMove)
 	{
 		colorToMove = Piece::White;
 	}
 
-	if (state.getSingleBoardPos(originalPos.getX(), originalPos.getY())->checkOccupied()) {
-		if (state.getSinglePiece(originalPos.getX(), originalPos.getY())->color == colorToMove) {
+	if (state->getSingleBoardPos(originalPos->getX(), originalPos->getY())->checkOccupied()) {
+		if (state->getSinglePiece(originalPos->getX(), originalPos->getY())->color == colorToMove) {
 			return true;
 		}
 	}
 	return false;
 }
 
-bool BoardHelper::checkIfDestinationIsEmpty(BoardPos& movePosition, BoardState& state) {
-	return !(state.getSingleBoardPos(movePosition.getX(), movePosition.getY())->checkOccupied());
+bool BoardHelper::checkIfDestinationIsEmpty(std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state) {
+	return !(state->getSingleBoardPos(movePosition->getX(), movePosition->getY())->checkOccupied());
 }
 
-bool BoardHelper::checkIfLegalNormalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state) {
-	if (state.whiteToMove)
+bool BoardHelper::checkIfLegalNormalMove(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state) {
+	if (state->whiteToMove)
 	{
 		// left move
-		if ((originalPos.getX() - 1) == movePosition.getX() && (originalPos.getY() + 1) == movePosition.getY())
+		if ((originalPos->getX() - 1) == movePosition->getX() && (originalPos->getY() + 1) == movePosition->getY())
 		{
 			return true;
 		}
 
 		// right move
-		if ((originalPos.getX() + 1) == movePosition.getX() && (originalPos.getY() + 1) == movePosition.getY())
+		if ((originalPos->getX() + 1) == movePosition->getX() && (originalPos->getY() + 1) == movePosition->getY())
 		{
 			return true;
 		}
 	}
 	else {
 		// left move
-		if ((originalPos.getX() - 1) == movePosition.getX() && (originalPos.getY() - 1) == movePosition.getY())
+		if ((originalPos->getX() - 1) == movePosition->getX() && (originalPos->getY() - 1) == movePosition->getY())
 		{
 			return true;
 		}
 
 		// right move
-		if ((originalPos.getX() + 1) == movePosition.getX() && (originalPos.getY() - 1) == movePosition.getY())
+		if ((originalPos->getX() + 1) == movePosition->getX() && (originalPos->getY() - 1) == movePosition->getY())
 		{
 			return true;
 		}
@@ -285,42 +270,41 @@ bool BoardHelper::checkIfLegalNormalMove(BoardPos& originalPos, BoardPos& movePo
 	return false;
 }
 
-bool BoardHelper::obligatedToTake(BoardState& state, BoardPos& positionToTake) {
-	std::vector<Piece> currentPieces = getCurrentlyUsedPieces(state);
-	
-	for (Piece piece : currentPieces) {
+bool BoardHelper::obligatedToTake(std::shared_ptr<BoardState> state, std::shared_ptr<BoardPos> positionToTake) {
+	std::shared_ptr<std::vector<std::shared_ptr<Piece>>> currentPieces = getCurrentlyUsedPieces(state);
+
+	for (std::shared_ptr<Piece> piece : *currentPieces) {
 		if (checkIfPieceCanTake(piece, state, positionToTake)) {
-			if (piece.color == 0) {
+			if (piece->color == 0) {
 				std::cout << "white must take a piece" << std::endl;
 			}
 			else {
 				std::cout << "black must take a piece" << std::endl;
-			}		
+			}
 			return true;
 		}
 	}
-
 	return false;
 }
 
 
 
-std::vector<Piece> BoardHelper::getCurrentlyUsedPieces(BoardState& state) {
-	bool whiteToMove = state.whiteToMove;
-	std::vector<Piece> currentPieces;
-	for (Piece piece : state.getPieces()) {
-		if (piece.color == piece.White && whiteToMove) {
-			currentPieces.push_back(piece);
+std::shared_ptr<std::vector<std::shared_ptr<Piece>>> BoardHelper::getCurrentlyUsedPieces(std::shared_ptr<BoardState> state) {
+	bool whiteToMove = state->whiteToMove;
+	std::shared_ptr<std::vector<std::shared_ptr<Piece>>> currentPieces = std::make_shared<std::vector<std::shared_ptr<Piece>>>();
+	for (std::shared_ptr<Piece> piece : *state->getPieces()) {
+		if (piece->color == piece->White && whiteToMove) {
+			currentPieces->push_back(piece);
 		}
-		else if (piece.color == piece.Black && !whiteToMove) {
-			currentPieces.push_back(piece);
+		else if (piece->color == piece->Black && !whiteToMove) {
+			currentPieces->push_back(piece);
 		}
 	}
 	return currentPieces;
 }
 
-bool BoardHelper::checkIfPieceCanTake(Piece piece, BoardState& state, BoardPos& positionToTake) {
-	if (!(piece.getIsDoublePiece())) { // single piece
+bool BoardHelper::checkIfPieceCanTake(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state, std::shared_ptr<BoardPos> positionToTake) {
+	if (!(piece->getIsDoublePiece())) { // single piece
 		if (checkDirectionSinglePieceCanTake(piece, state, LEFTUP, positionToTake) || checkDirectionSinglePieceCanTake(piece, state, RIGHTUP, positionToTake) || checkDirectionSinglePieceCanTake(piece, state, LEFTDOWN, positionToTake) || checkDirectionSinglePieceCanTake(piece, state, RIGHTDOWN, positionToTake)) {
 			return true;
 		}
@@ -336,23 +320,22 @@ bool BoardHelper::checkIfPieceCanTake(Piece piece, BoardState& state, BoardPos& 
 		else {
 			return false;
 		}
-		
+
 	}
-	
+
 
 }
 
-bool BoardHelper::checkDircectionDoublePieceCanTake(Piece piece, BoardState& state, BoardHelper::directions direction, BoardPos& positionToTake) {
-	int x = piece.position.getX();
-	int y = piece.position.getY();
+bool BoardHelper::checkDircectionDoublePieceCanTake(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state, BoardHelper::directions direction, std::shared_ptr<BoardPos> positionToTake) {
+	int x = piece->position->getX();
+	int y = piece->position->getY();
 	int xToCheck = x;
 	int yToCheck = y;
 	bool foundOpposingPiece = false;
 	
-
 	try {
-		BoardPos potentialTakePos;
-		for (int i = 0; i < state.getBoardSize(); i++) {
+		std::shared_ptr<BoardPos> potentialTakePos;
+		for (int i = 0; i < state->getBoardSize(); i++) {
 			switch (direction)
 			{
 			case BoardHelper::LEFTUP:
@@ -375,12 +358,12 @@ bool BoardHelper::checkDircectionDoublePieceCanTake(Piece piece, BoardState& sta
 				break;
 			}
 
-			
-			BoardPos* pos = state.getSingleBoardPos(xToCheck, yToCheck);
+
+			std::shared_ptr<BoardPos> pos = state->getSingleBoardPos(xToCheck, yToCheck);
 
 			if (pos->checkOccupied())
 			{
-				if (state.getSinglePiece(pos->getX(), pos->getY())->color == piece.color) {
+				if (state->getSinglePiece(pos->getX(), pos->getY())->color == piece->color) {
 					return false;
 				}
 				else {
@@ -389,27 +372,33 @@ bool BoardHelper::checkDircectionDoublePieceCanTake(Piece piece, BoardState& sta
 						return false;
 					}
 					foundOpposingPiece = true;
-					potentialTakePos = *pos;
+					
+
+					potentialTakePos->setOccupied(pos->checkOccupied());
+					potentialTakePos->setX(pos->getX());
+					potentialTakePos->setY(pos->getY());
 				}
 			}
 			else {
 				if (foundOpposingPiece)
 				{
-					positionToTake = potentialTakePos;
+					positionToTake->setOccupied(potentialTakePos->checkOccupied());
+					positionToTake->setX(potentialTakePos->getX());
+					positionToTake->setY(potentialTakePos->getY());
 					return true;
 				}
 			}
 		}
 
 	}
-	catch (const std::out_of_range & e) {
+	catch (const std::out_of_range& e) {
 		return false;
 	}
 }
 
-bool BoardHelper::checkDirectionSinglePieceCanTake(Piece piece, BoardState& state, BoardHelper::directions direction , BoardPos& positionToTake) {
-	int x = piece.position.getX();
-	int y = piece.position.getY();
+bool BoardHelper::checkDirectionSinglePieceCanTake(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state, BoardHelper::directions direction, std::shared_ptr<BoardPos> positionToTake) {
+	int x = piece->position->getX();
+	int y = piece->position->getY();
 	int xToCheck, yToCheck;
 	switch (direction)
 	{
@@ -432,11 +421,11 @@ bool BoardHelper::checkDirectionSinglePieceCanTake(Piece piece, BoardState& stat
 	}
 
 	try {
-		BoardPos* currentPos = state.getSingleBoardPos(xToCheck, yToCheck);
+		std::shared_ptr<BoardPos> currentPos = state->getSingleBoardPos(xToCheck, yToCheck);
 		if (currentPos->checkOccupied()) {
-			for (Piece currentPiece : state.getPieces()) {
-				if (currentPiece.position.getX() == currentPos->getX() && currentPiece.position.getY() == currentPos->getY() && currentPiece.color != piece.color) {
-					
+			for (std::shared_ptr<Piece> currentPiece : *state->getPieces()) {
+				if (currentPiece->position->getX() == currentPos->getX() && currentPiece->position->getY() == currentPos->getY() && currentPiece->color != piece->color) {
+
 					switch (direction)
 					{
 					case BoardHelper::LEFTUP:
@@ -458,37 +447,12 @@ bool BoardHelper::checkDirectionSinglePieceCanTake(Piece piece, BoardState& stat
 					default:
 						break;
 					}
-					BoardPos previousPos = *currentPos;
-					currentPos = state.getSingleBoardPos(xToCheck, yToCheck);
-					if (!(currentPos->checkOccupied())) {
-						positionToTake = previousPos;
-						return true;
-					}
-				}
-			}
-		}
-	}
-	catch (const std::out_of_range & e) {
-		//empty catch to continue with other checks
-		return false;
-	}
-	return false;
-}
+\
+					positionToTake->setX(currentPos->getX());
+					positionToTake->setY(currentPos->getY());
+					positionToTake->setOccupied(currentPos->checkOccupied());
 
-bool BoardHelper::checkLeftUp(Piece piece, BoardState& state) {
-	//left up
-	int x = piece.position.getX();
-	int y = piece.position.getY();
-	int xToCheck = x - 1;
-	int yToCheck = y - 1;
-	try {
-		BoardPos* currentPos = state.getSingleBoardPos(xToCheck, yToCheck);
-		if (currentPos->checkOccupied()) {
-			for (Piece currentPiece : state.getPieces()) {
-				if (currentPiece.position.getX() == currentPos->getX() && currentPiece.position.getY() == currentPos->getY() && currentPiece.color != piece.color) {
-					xToCheck -= 1;
-					yToCheck -= 1;
-					currentPos = state.getSingleBoardPos(xToCheck, yToCheck);
+					currentPos = state->getSingleBoardPos(xToCheck, yToCheck);
 					if (!(currentPos->checkOccupied())) {
 						return true;
 					}
@@ -503,22 +467,50 @@ bool BoardHelper::checkLeftUp(Piece piece, BoardState& state) {
 	return false;
 }
 
-bool BoardHelper::checkRightUp(Piece piece, BoardState& state) {
+bool BoardHelper::checkLeftUp(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state) {
+	//left up
+	int x = piece->position->getX();
+	int y = piece->position->getY();
+	int xToCheck = x - 1;
+	int yToCheck = y - 1;
+	try {
+		std::shared_ptr<BoardPos> currentPos = state->getSingleBoardPos(xToCheck, yToCheck);
+		if (currentPos->checkOccupied()) {
+			for (std::shared_ptr<Piece> currentPiece : *state->getPieces()) {
+				if (currentPiece->position->getX() == currentPos->getX() && currentPiece->position->getY() == currentPos->getY() && currentPiece->color != piece->color) {
+					xToCheck -= 1;
+					yToCheck -= 1;
+					currentPos = state->getSingleBoardPos(xToCheck, yToCheck);
+					if (!(currentPos->checkOccupied())) {
+						return true;
+					}
+				}
+			}
+		}
+	}
+	catch (const std::out_of_range& e) {
+		//empty catch to continue with other checks
+		return false;
+	}
+	return false;
+}
+
+bool BoardHelper::checkRightUp(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state) {
 
 	//right up
-	int x = piece.position.getX();
-	int y = piece.position.getY();
+	int x = piece->position->getX();
+	int y = piece->position->getY();
 	int xToCheck = x + 1;
 	int yToCheck = y - 1;
 
 	try {
-		BoardPos* currentPos = state.getSingleBoardPos(xToCheck, yToCheck);
+		std::shared_ptr<BoardPos> currentPos = state->getSingleBoardPos(xToCheck, yToCheck);
 		if (currentPos->checkOccupied()) {
-			for (Piece currentPiece : state.getPieces()) {
-				if (currentPiece.position.getX() == currentPos->getX() && currentPiece.position.getY() == currentPos->getY() && currentPiece.color != piece.color) {
+			for (std::shared_ptr<Piece> currentPiece : *state->getPieces()) {
+				if (currentPiece->position->getX() == currentPos->getX() && currentPiece->position->getY() == currentPos->getY() && currentPiece->color != piece->color) {
 					xToCheck += 1;
 					yToCheck -= 1;
-					currentPos = state.getSingleBoardPos(xToCheck, yToCheck);
+					currentPos = state->getSingleBoardPos(xToCheck, yToCheck);
 					if (!(currentPos->checkOccupied())) {
 						return true;
 					}
@@ -533,20 +525,20 @@ bool BoardHelper::checkRightUp(Piece piece, BoardState& state) {
 	return false;
 }
 
-bool BoardHelper::checkLeftDown(Piece piece, BoardState& state) {
+bool BoardHelper::checkLeftDown(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state) {
 	//left down
-	int x = piece.position.getX();
-	int y = piece.position.getY();
+	int x = piece->position->getX();
+	int y = piece->position->getY();
 	int xToCheck = x - 1;
 	int yToCheck = y + 1;
 	try {
-		BoardPos* currentPos = state.getSingleBoardPos(xToCheck, yToCheck);
+		std::shared_ptr<BoardPos> currentPos = state->getSingleBoardPos(xToCheck, yToCheck);
 		if (currentPos->checkOccupied()) {
-			for (Piece currentPiece : state.getPieces()) {
-				if (currentPiece.position.getX() == currentPos->getX() && currentPiece.position.getY() == currentPos->getY() && currentPiece.color != piece.color) {
+			for (std::shared_ptr<Piece> currentPiece : *state->getPieces()) {
+				if (currentPiece->position->getX() == currentPos->getX() && currentPiece->position->getY() == currentPos->getY() && currentPiece->color != piece->color) {
 					xToCheck -= 1;
 					yToCheck += 1;
-					currentPos = state.getSingleBoardPos(xToCheck, yToCheck);
+					currentPos = state->getSingleBoardPos(xToCheck, yToCheck);
 					if (!(currentPos->checkOccupied())) {
 						return true;
 					}
@@ -561,21 +553,21 @@ bool BoardHelper::checkLeftDown(Piece piece, BoardState& state) {
 	return false;
 }
 
-bool BoardHelper::checkRightDown(Piece piece, BoardState& state) {
+bool BoardHelper::checkRightDown(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state) {
 
 	//right down
-	int x = piece.position.getX();
-	int y = piece.position.getY();
+	int x = piece->position->getX();
+	int y = piece->position->getY();
 	int xToCheck = x + 1;
 	int yToCheck = y + 1;
 	try {
-		BoardPos* currentPos = state.getSingleBoardPos(xToCheck, yToCheck);
+		std::shared_ptr<BoardPos> currentPos = state->getSingleBoardPos(xToCheck, yToCheck);
 		if (currentPos->checkOccupied()) {
-			for (Piece currentPiece : state.getPieces()) {
-				if (currentPiece.position.getX() == currentPos->getX() && currentPiece.position.getY() == currentPos->getY() && currentPiece.color != piece.color) {
+			for (std::shared_ptr<Piece> currentPiece : *state->getPieces()) {
+				if (currentPiece->position->getX() == currentPos->getX() && currentPiece->position->getY() == currentPos->getY() && currentPiece->color != piece->color) {
 					xToCheck += 1;
 					yToCheck += 1;
-					currentPos = state.getSingleBoardPos(xToCheck, yToCheck);
+					currentPos = state->getSingleBoardPos(xToCheck, yToCheck);
 					if (!(currentPos->checkOccupied())) {
 						return true;
 					}
@@ -590,11 +582,11 @@ bool BoardHelper::checkRightDown(Piece piece, BoardState& state) {
 	return false;
 }
 
-bool BoardHelper::checkIfPieceCanPromote(Piece piece) {
-	if (piece.color == Piece::White && piece.position.getY() == 7) {
+bool BoardHelper::checkIfPieceCanPromote(std::shared_ptr<Piece> piece) {
+	if (piece->color == Piece::White && piece->position->getY() == 7) {
 		return true;
 	}
-	else if (piece.color == Piece::Black && piece.position.getY() == 0) {
+	else if (piece->color == Piece::Black && piece->position->getY() == 0) {
 		return true;
 	}
 

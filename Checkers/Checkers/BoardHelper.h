@@ -10,32 +10,30 @@ public:
 	//enums
 	enum checkerstate { VALIDMOVE, INVALIDMOVE, GAMECOMPLETED };
 	enum directions { LEFTUP, RIGHTUP, LEFTDOWN, RIGHTDOWN };
+
 	//functies
-	void RemovePiece(BoardPos& position, BoardState& state);
-	void MakeDoublePiece(BoardPos& position, BoardState& state);
-	BoardHelper::checkerstate makeMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state);
-	bool checkIfLegalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state, BoardPos& positionToTake);
-	bool checkForCorrectDoublePieceMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state);
-	bool checkForCorrectNormalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state);
-	bool checkIfLegalDoublePieceMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state);
-	bool checkIfPieceToMoveIsCorrectColor(BoardPos& originalPos, BoardState& state);
-	bool checkIfDestinationIsEmpty(BoardPos& movePosition, BoardState& state);
-	bool checkIfLegalNormalMove(BoardPos& originalPos, BoardPos& movePosition, BoardState& state);
-	bool obligatedToTake(BoardState& state, BoardPos& positionToTake);
+	void RemovePiece(std::shared_ptr<BoardPos> position, std::shared_ptr<BoardState> state);
+	void MakeDoublePiece(std::shared_ptr<BoardPos> position, std::shared_ptr<BoardState> state);
+	BoardHelper::checkerstate makeMove(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state);
+	bool checkIfLegalMove(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state, std::shared_ptr<BoardPos> positionToTake);
+	bool checkForCorrectDoublePieceMove(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state);
+	bool checkForCorrectNormalMove(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state);
+	bool checkIfLegalDoublePieceMove(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state);
+	bool checkIfPieceToMoveIsCorrectColor(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardState> state);
+	bool checkIfDestinationIsEmpty(std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state);
+	bool checkIfLegalNormalMove(std::shared_ptr<BoardPos> originalPos, std::shared_ptr<BoardPos> movePosition, std::shared_ptr<BoardState> state);
+	bool obligatedToTake(std::shared_ptr<BoardState> state, std::shared_ptr<BoardPos> positionToTake);
 	
 private:
-	std::vector<Piece> getCurrentlyUsedPieces(BoardState& state);
-	bool checkIfPieceCanTake(Piece piece, BoardState& state, BoardPos& positionToTake);
-	bool checkDircectionDoublePieceCanTake(Piece piece, BoardState& state, BoardHelper::directions direction, BoardPos& positionToTake);
-	bool checkDirectionSinglePieceCanTake(Piece piece, BoardState& state, BoardHelper::directions direction, BoardPos& positionToTake);
-	bool checkLeftUp(Piece piece, BoardState& state);
-	bool checkRightUp(Piece piece, BoardState& state);
-	bool checkLeftDown(Piece piece, BoardState& state);
-	bool checkRightDown(Piece piece, BoardState& state);
-
-	bool checkIfPieceCanPromote(Piece piece);
-	
-	
+	std::shared_ptr<std::vector<std::shared_ptr<Piece>>> getCurrentlyUsedPieces(std::shared_ptr<BoardState> state);
+	bool checkIfPieceCanTake(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state, std::shared_ptr<BoardPos> positionToTake);
+	bool checkDircectionDoublePieceCanTake(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state, BoardHelper::directions direction, std::shared_ptr<BoardPos> positionToTake);
+	bool checkDirectionSinglePieceCanTake(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state, BoardHelper::directions direction, std::shared_ptr<BoardPos> positionToTake);
+	bool checkLeftUp(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state);
+	bool checkRightUp(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state);
+	bool checkLeftDown(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state);
+	bool checkRightDown(std::shared_ptr<Piece> piece, std::shared_ptr<BoardState> state);
+	bool checkIfPieceCanPromote(std::shared_ptr<Piece> piece);
 };
 
 
