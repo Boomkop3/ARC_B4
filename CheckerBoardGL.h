@@ -34,7 +34,6 @@ public:
 	void selectUp();
 	void selectDown();
 	void highlightByCoordinate();
-	void selectPieceByHighlightedLocation();
 	void selectPieceByHighlightedLocationAlternate();
 	std::shared_ptr<GLObject> getLiftedPiece();
 	glm::vec3 GetBoardCenter(); /// Gets the center of the surface the board

@@ -210,16 +210,6 @@ void CheckerBoardGL::highlightByCoordinate() {
 	}
 }
 
-void CheckerBoardGL::selectPieceByHighlightedLocation() {
-	for (int i = 0; i < glCheckerPiecesLocations.size(); i++) {
-		if (*glCheckerPiecesLocations[i] == this->selectedTile) {
-			//glCheckerPieces[i]->position.y += 2.f;
-			glCheckerPieces[i]->liftableGLUnit->lift();
-		}
-		else glCheckerPieces[i]->liftableGLUnit->drop();
-	}
-}
-
 void CheckerBoardGL::selectPieceByHighlightedLocationAlternate() {
 	for (std::shared_ptr<GLObject> checkerPiece : glCheckerPieces) {
 		if (glm::vec3(checkerPiece->position.x, 0, checkerPiece->position.z) == GetCoordinateFor((this->selectedTile.x+1), (this->selectedTile.y+1)))
