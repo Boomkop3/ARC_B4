@@ -17,7 +17,7 @@ GLShape::GLShape(std::shared_ptr<AdvancedShape> advancedShape)
 	this->advancedShape = advancedShape;
 }
 
-void GLShape::draw() const
+void GLShape::draw()
 {
 	if (this->vertex_vector && this->vertices && this->indices) {
 		GLenum draw_type = get_draw_type();

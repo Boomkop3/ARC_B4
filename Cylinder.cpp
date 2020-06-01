@@ -15,7 +15,7 @@ void Cylinder::get_geometry(std::vector<SpecificIndice>& indices_types_out) cons
 {
 	int indicesIndex = 0;
 	double height = get_height();
-	int steps = 32;
+	int steps = 12;
 	double stepsize = PI * 2 / steps;
 	double diametre = (get_width() + get_depth()) / 2.0;
 	double radius = diametre / 2;

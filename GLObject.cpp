@@ -28,6 +28,12 @@ void GLObject::setDecorationGLUnit(std::shared_ptr<DecorationGLUnit> unit)
 	this->decorationGLUnit = unit;
 }
 
+void GLObject::setLiftableGLUnit(std::shared_ptr<LiftableGLUnit> unit)
+{
+	unit->setGLObject(this);
+	this->liftableGLUnit = unit;
+}
+
 std::list<std::shared_ptr<GLUnit>> GLObject::getGLUnits()
 {
 	return units;

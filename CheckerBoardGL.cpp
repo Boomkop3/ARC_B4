@@ -33,7 +33,8 @@ void CheckerBoardGL::addPiece(CheckerPiece::Color color, int x, int y) {
 		y,
 		BOARD_FLOOR
 	);
-	this->globjects.push_back(piece->getGlObject());
+	this->glCheckerPieces.push_back(piece->getGlObject());
+	this->glCheckerPiecesLocations.push_back(std::make_shared<glm::vec2>(x, y));
 }
 
 void CheckerBoardGL::addPieces() {
@@ -126,11 +127,13 @@ void CheckerBoardGL::create_board()
 	rightEdge->setDecorationGLUnit(edgeDecoration);
 	backEdge->setDecorationGLUnit(edgeDecoration);
 	frontEdge->setDecorationGLUnit(edgeDecoration);
-	this->globjects.push_back(leftEdge);
-	this->globjects.push_back(rightEdge);
-	this->globjects.push_back(backEdge);
-	this->globjects.push_back(frontEdge);
+	this->glDecorationBoardBorder.push_back(leftEdge);
+	this->glDecorationBoardBorder.push_back(rightEdge);
+	this->glDecorationBoardBorder.push_back(backEdge);
+	this->glDecorationBoardBorder.push_back(frontEdge);
 }
+
+
 
 inline std::shared_ptr<GLObject> CheckerBoardGL::GetSharedCuboid(double width, double height, double length) {
 	std::shared_ptr<GLShape> sharedShape = std::make_shared<GLShape>(
@@ -154,25 +157,83 @@ glm::vec3 CheckerBoardGL::GetCoordinateFor(int row, int column) {
 }
 
 std::shared_ptr<GLObject> CheckerBoardGL::GetShapeByCoordinate(int column, int row) {
-	int index = 0;
-	for (int x = 0; x < row - 1; x++)
-		index++;
-	for (int z = 0; z < column - 1; z++) 
-		index++;
+	int index = index = (row - 1) * BOARD_SIZE + column;
 	return this->globjects[index];
 }
 
-std::shared_ptr<GLObject> CheckerBoardGL::highlightByCoordinate(int column, int row) {
-	int index = 0;
-	for (int x = 0; x < row - 1; x++) {
-		index++;
-		for (int z = 0; z < column - 1; z++)
-			index++;
+void CheckerBoardGL::resetBoardColors() {
+	for (std::shared_ptr<GLObject> glObject : globjects) {
+		std::shared_ptr<TextureColorComboGLUnit> colorCombo = std::static_pointer_cast<TextureColorComboGLUnit>(glObject->decorationGLUnit);
+		colorCombo->color = glm::vec4(1.f, 1.f, 1.f, 1.f);
 	}
-	std::shared_ptr<TextureColorComboGLUnit> colorCombo = std::static_pointer_cast<TextureColorComboGLUnit>(this->globjects[index]->decorationGLUnit);
-		colorCombo->set_texture_atlas_coords(1, 3);
-	return this->globjects[index];
-	
+}
+
+void CheckerBoardGL::selectRight() {
+	if (this->selectedTile.x < BOARD_SIZE-1) {
+		this->selectedTile.x++;
+		resetBoardColors();
+		highlightByCoordinate();
+	}
+}
+
+void CheckerBoardGL::selectLeft() {
+	if (this->selectedTile.x > 0) {
+		this->selectedTile.x--;
+		resetBoardColors();
+		highlightByCoordinate();
+	}
+}
+
+void CheckerBoardGL::selectUp() {
+	if (this->selectedTile.y > 0) {
+		this->selectedTile.y--;
+		resetBoardColors();
+		highlightByCoordinate();
+	}
+}
+
+void CheckerBoardGL::selectDown() {
+	if (this->selectedTile.y < BOARD_SIZE-1) {
+		this->selectedTile.y++;
+		resetBoardColors();
+		highlightByCoordinate();
+	}
+}
+
+void CheckerBoardGL::highlightByCoordinate() {
+	std::cout << "selected Coordinates " << this->selectedTile.x << " , " << this->selectedTile.y << std::endl;
+
+	int index = index=this->selectedTile.x*BOARD_SIZE+this->selectedTile.y;
+	if (index >= 0 && index < this->globjects.size()) {
+		std::shared_ptr<TextureColorComboGLUnit> colorCombo = std::static_pointer_cast<TextureColorComboGLUnit>(this->globjects[index]->decorationGLUnit);
+		colorCombo->color = glm::vec4(200.f, 200.f, 200.f, 1.f);
+	}
+}
+
+void CheckerBoardGL::selectPieceByHighlightedLocation() {
+	for (int i = 0; i < glCheckerPiecesLocations.size(); i++) {
+		if (*glCheckerPiecesLocations[i] == this->selectedTile) {
+			//glCheckerPieces[i]->position.y += 2.f;
+			glCheckerPieces[i]->liftableGLUnit->lift();
+		}
+		else glCheckerPieces[i]->liftableGLUnit->drop();
+	}
+}
+
+void CheckerBoardGL::selectPieceByHighlightedLocationAlternate() {
+	for (std::shared_ptr<GLObject> checkerPiece : glCheckerPieces) {
+		if (glm::vec3(checkerPiece->position.x, 0, checkerPiece->position.z) == GetCoordinateFor((this->selectedTile.x+1), (this->selectedTile.y+1)))
+			checkerPiece->liftableGLUnit->lift();
+		else checkerPiece->liftableGLUnit->drop();
+	}
+}
+
+std::shared_ptr<GLObject> CheckerBoardGL::getLiftedPiece() {
+	for (std::shared_ptr<GLObject> checkerPiece : glCheckerPieces) {
+		if (checkerPiece->liftableGLUnit->isLifted)
+			return checkerPiece;
+	}
+	return nullptr;
 }
 
 inline double getPartialCoordinateFor(int rowOrCol) {
@@ -192,5 +253,12 @@ void CheckerBoardGL::draw_board()
 {
 	for (std::shared_ptr<GLObject> glObject : globjects) {
 		glObject->draw();
+	}
+	for (std::shared_ptr<GLObject> checkerPiece : glCheckerPieces) {
+		checkerPiece->draw();
+		checkerPiece->liftableGLUnit->update(0.0f);
+	}
+	for (std::shared_ptr<GLObject> boardBorderPiece : glDecorationBoardBorder) {
+		boardBorderPiece->draw();
 	}
 }

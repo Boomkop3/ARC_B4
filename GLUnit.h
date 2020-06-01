@@ -10,7 +10,7 @@ public:
 	GLUnit();
 	~GLUnit();
 
-	virtual void update(float elapsedTime) const {};
+	virtual void update(float elapsedTime) {};
 	void setGLObject(GLObject* glObject);
 };
 

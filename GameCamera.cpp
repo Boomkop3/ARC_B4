@@ -3,8 +3,6 @@ static double camX;
 static double camZ;
 static double rotX;
 
-
-
 GameCamera::GameCamera(GLFWwindow* window)
 {
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -15,7 +13,6 @@ GameCamera::GameCamera(GLFWwindow* window)
 glm::mat4 GameCamera::getMatrix()
 {
 	glm::vec3 viewPosOrTargetPos = glm::vec3(0, 0, 0);  // Kijkt nu naar positie 0,0,0
-
 	glm::mat4 viewMat = glm::lookAt(
 		glm::vec3(camX, 0, camZ) + viewPosOrTargetPos,
 		glm::vec3(0,0,0),
@@ -31,37 +28,55 @@ void GameCamera::move(float angle, float fac)
 	position.z += (float)sin(rotation.y + glm::radians(angle)) * fac;
 }
 
-static double rotY=0;
-static double radius = 10;
-void GameCamera::update2(GLFWwindow* window)
+void GameCamera::decreaseRotY() {
+	rotY -= .02;
+}
+
+void GameCamera::increaseRotY() {
+	rotY += .02;
+}
+
+void GameCamera::decreaseRotX() {
+	rotX -= .02f;
+}
+
+void GameCamera::increaseRotX() {
+	rotX += .02f;
+}
+
+void GameCamera::decreaseRadius() {
+	radius -= .1;
+}
+
+void GameCamera::increaseRadius() {
+	radius += .1;
+}
+
+
+void GameCamera::updateKeyInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		rotY-=.02;
+		decreaseRotY();
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		rotY+=.02;
+		increaseRotY();
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		rotX += .02f;
+		increaseRotX();
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		rotX -= .02f;
+		decreaseRotX();
 	if (glfwGetKey(window, GLFW_KEY_EQUAL) == GLFW_PRESS)
-		radius-=.1;
+		decreaseRadius();
 	if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS)
-		radius += .1;
+		increaseRadius();
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 		setPlayer1Cam();
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 		setPlayer2Cam();
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
 		setStartGamePosition();
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		this->translation.y -= .02;
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		this->translation.y += .02;
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		this->translation.x += .02;
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		this->translation.x -= .02;
 
+	// Increasing / decrease translation.x / translation.y can be used to translate the viewcamera, generally unwanted behaviour, but might be used for future purposes.
+	// Code could be inserted below.
+	
 	camX = sin(rotY) * radius;
 	camZ = cos(rotY) * radius;
 
@@ -133,12 +148,14 @@ void GameCamera::setPlayer1Cam() {
 	this->targetRadius = 10.7;
 	this->targetRotation.y = 0;
 	this->targetRotation.x = .17 * PI;
+	player1Cam = true;
 }
 
 void GameCamera::setPlayer2Cam() {
 	this->targetRadius = 10.7;
 	this->targetRotation.y = PI;
 	this->targetRotation.x = -.17 * PI;
+	player1Cam = false;
 }
 
 void GameCamera::setStartGamePosition() {

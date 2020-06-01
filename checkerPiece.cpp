@@ -23,14 +23,15 @@ CheckerPiece::CheckerPiece(std::shared_ptr<std::vector<tigl::Vertex>> buffer, st
 	std::shared_ptr<TextureColorComboGLUnit> pieceDecoration = std::make_shared<TextureColorComboGLUnit>();
 	pieceDecoration->set_texture_atlas(textureAtlas);
 	if (color == CheckerPiece::WHITE) {
-		pieceDecoration->set_texture_color_filter(1.0f, 1.0f, 1.0f, 1.0f);
+		pieceDecoration->set_texture_color_filter(1.f, 1.f, 1.f, .95f);
 		pieceDecoration->set_texture_atlas_coords(2, 1);
 	}
 	else {
-		pieceDecoration->set_texture_color_filter(0.2f, 0.2f, 0.2f, 1.0f);
+		pieceDecoration->set_texture_color_filter(0.4f, 0.1f, 0.1f, .95f);
 		pieceDecoration->set_texture_atlas_coords(2, 1);
 	}
 	sharedGLObject->setDecorationGLUnit(pieceDecoration);
-
+	std::shared_ptr<LiftableGLUnit> liftableGLUnit = std::make_shared<LiftableGLUnit>();
+	sharedGLObject->setLiftableGLUnit(liftableGLUnit);
 	this->glObject = sharedGLObject;
 }

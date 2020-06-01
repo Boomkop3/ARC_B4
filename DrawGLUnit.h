@@ -7,6 +7,6 @@ class DrawGLUnit : public GLUnit
 public:
 	DrawGLUnit();
 	~DrawGLUnit();
-	virtual void draw() const = 0;
+	virtual void draw() = 0;
 };
 

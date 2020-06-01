@@ -217,10 +217,39 @@ bool init()
 
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
-	// reserved for later use
-	if (key == GLFW_KEY_T && action == GLFW_PRESS)
+	if (key == GLFW_KEY_UP && action == GLFW_PRESS)
 	{
-//		gCheckerBoardGL->highlightByCoordinate(5, 5);
+		if (gCamera->player1Cam)
+			gCheckerBoardGL->selectUp();
+		else gCheckerBoardGL->selectDown();
+	}
+	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+	{
+		if (!gCamera->player1Cam)
+			gCheckerBoardGL->selectUp();
+		else gCheckerBoardGL->selectDown();
+	}
+	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+	{
+		if (gCamera->player1Cam)
+			gCheckerBoardGL->selectLeft();
+		else gCheckerBoardGL->selectRight();
+	}
+	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+	{
+		if (!gCamera->player1Cam)
+			gCheckerBoardGL->selectLeft();
+		else gCheckerBoardGL->selectRight();
+	}
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+		if (gCheckerBoardGL->getLiftedPiece()) {
+			std::shared_ptr<GLObject> lifted = gCheckerBoardGL->getLiftedPiece();
+			// if move is allowed -->
+			glm::vec3 movePos = gCheckerBoardGL->GetCoordinateFor(gCheckerBoardGL->selectedTile.x+1, gCheckerBoardGL->selectedTile.y+1);
+			lifted->liftableGLUnit->moveToXY(movePos.x, movePos.z);
+			lifted->liftableGLUnit->drop();
+		} else 
+		gCheckerBoardGL->selectPieceByHighlightedLocationAlternate();
 	}
 }
 
@@ -237,7 +266,7 @@ void update()
 	timer -= deltaTime;
 	if (timer <= 0) {
 		timer = 1./updatesPerSecond;
-		gCamera->update2(gWindow);
+		gCamera->updateKeyInput(gWindow);
 		gCamera->checkTargetRadius();
 		gCamera->checkTargetRotation();
 	}
@@ -251,14 +280,16 @@ void create_checkerboard() {
 	gCamera->translation.y = -centerPos.y;
 	gCamera->translation.z = -centerPos.z;
 
-	tigl::shader->enableLighting(true);
-	tigl::shader->setLightCount(1);
-	tigl::shader->setLightPosition(0, centerPos);
-	tigl::shader->setLightDirectional(0, false);
-	tigl::shader->setLightAmbient(0, glm::vec3(.5f, .5f, .5f));
-	tigl::shader->setLightDiffuse(0, glm::vec3(.6f, .6f, .6f));
-	tigl::shader->setLightSpecular(0, glm::vec3(1.f, .8f, .4f));
-	tigl::shader->setShinyness(.5f);
+	gCheckerBoardGL->highlightByCoordinate();
+
+	//tigl::shader->enableLighting(true);
+	//tigl::shader->setLightCount(1);
+	//tigl::shader->setLightPosition(0, centerPos);
+	//tigl::shader->setLightDirectional(0, true);
+	//tigl::shader->setLightAmbient(0, glm::vec3(.5f, .5f, .5f));
+	//tigl::shader->setLightDiffuse(0, glm::vec3(.6f, .6f, .6f));
+	//tigl::shader->setLightSpecular(0, glm::vec3(1.f, .8f, .4f));
+	//tigl::shader->setShinyness(.5f);
 
 	gCamera->setStartGamePosition();
 }

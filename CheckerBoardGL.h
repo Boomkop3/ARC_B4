@@ -28,15 +28,27 @@ public:
 	void create_board();
 	glm::vec3 GetCoordinateFor(int row, int column); /// Gets the center of the given square > 1 based index
 	std::shared_ptr<GLObject> GetShapeByCoordinate(int column, int row);
-	std::shared_ptr<GLObject> highlightByCoordinate(int column, int row);
+	void resetBoardColors();
+	void selectRight();
+	void selectLeft();
+	void selectUp();
+	void selectDown();
+	void highlightByCoordinate();
+	void selectPieceByHighlightedLocation();
+	void selectPieceByHighlightedLocationAlternate();
+	std::shared_ptr<GLObject> getLiftedPiece();
 	glm::vec3 GetBoardCenter(); /// Gets the center of the surface the board
 	void draw_board();
+	glm::vec2 selectedTile = glm::vec2(0,0);
 private:
 	std::shared_ptr<GLObject> GetSharedCuboid(double x, double y, double z);
 	std::shared_ptr<std::vector<tigl::Vertex>> buffer;
 	std::shared_ptr<std::vector<glm::vec3>> vertices_in;
 	std::shared_ptr<std::vector<glm::vec3>> indices_in;
 	std::vector<std::shared_ptr<GLObject>> globjects;
+	std::vector<std::shared_ptr<GLObject>> glDecorationBoardBorder;
+	std::vector<std::shared_ptr<GLObject>> glCheckerPieces;
+	std::vector<std::shared_ptr<glm::vec2>> glCheckerPiecesLocations;
 	void addPiece(CheckerPiece::Color color, int x, int y);
 	void addPieces();
 };

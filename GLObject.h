@@ -3,6 +3,7 @@
 #include "GLUnit.h"
 #include "DrawGLUnit.h"
 #include "DecorationGLUnit.h"
+#include "LiftableGLUnit.h"
 #include "tigl.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/glm.hpp>
@@ -10,6 +11,7 @@
 class GLUnit;
 class DrawGLUnit;
 class DecorationGLUnit;
+class LiftableGLUnit;
 
 class GLObject
 {
@@ -19,7 +21,7 @@ public:
 
 	std::shared_ptr<DrawGLUnit> drawGLUnit = nullptr;
 	std::shared_ptr<DecorationGLUnit> decorationGLUnit = nullptr;
-
+	std::shared_ptr<LiftableGLUnit> liftableGLUnit = nullptr;
 	std::list<std::shared_ptr<GLUnit>> units;
 
 	glm::vec3 position;
@@ -29,6 +31,7 @@ public:
 	void addGLUnit(std::shared_ptr<GLUnit> unit);
 	void setDrawGLUnit(std::shared_ptr<DrawGLUnit> unit);
 	void setDecorationGLUnit(std::shared_ptr<DecorationGLUnit> unit);
+	void setLiftableGLUnit(std::shared_ptr<LiftableGLUnit> unit);
 
 	std::list<std::shared_ptr<GLUnit>> getGLUnits();
 	void update(float elapsedTime);
