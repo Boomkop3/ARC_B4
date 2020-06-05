@@ -177,10 +177,7 @@
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="LiftableGLUnit.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Prism.cpp" />
-    <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="Shape.cpp" />
-    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="DecorationGLUnit.cpp" />
     <ClCompile Include="TextureAtlas.cpp" />
     <ClCompile Include="TextureColorComboGLUnit.cpp" />
@@ -209,10 +206,7 @@
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="LiftableGLUnit.h" />
-    <ClInclude Include="Prism.h" />
-    <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Shape.h" />
-    <ClInclude Include="Sphere.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="DecorationGLUnit.h" />
     <ClInclude Include="TextureColorComboGLUnit.h" />

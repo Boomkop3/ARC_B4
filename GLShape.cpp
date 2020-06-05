@@ -89,9 +89,6 @@ GLenum GLShape::get_draw_type() const
 			break;
 		case Shape::CUBOID: draw_type = GL_QUADS; break;
 		case Shape::CYLINDER: break;
-		case Shape::SPHERE: break;
-		case Shape::PRISM: break;
-		case Shape::PYRAMID: break;
 		case Shape::ADVANCED: draw_type = GL_ZERO; break;
 	}
 	return draw_type;

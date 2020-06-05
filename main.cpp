@@ -9,8 +9,6 @@
 #include "tigl.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "cuboid.h"
-#include "Pyramid.h"
-#include "Prism.h"
 #include "GLShape.h"
 #include "stb_image.h"
 #include "GLObject.h"
@@ -22,6 +20,7 @@
 #include "GLUnit.h"
 #include "GameCamera.h"
 #include "CheckerBoardGL.h"
+#include "GestureDetection.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -60,7 +59,7 @@ std::shared_ptr<std::vector<tigl::Vertex>> gBuffer = std::make_shared<std::vecto
 std::shared_ptr<std::vector<glm::vec3>> gVertices_in = std::make_shared<std::vector<glm::vec3>>();;
 std::shared_ptr<std::vector<glm::vec3>> gIndices_in = std::make_shared<std::vector<glm::vec3>>();;
 std::shared_ptr<CheckerBoardGL> gCheckerBoardGL;
-
+std::shared_ptr<GestureDetection> gGestureDetection;
 static void GLClearError()
 {
 	// Possibility for thread.yield?
@@ -86,7 +85,9 @@ int main(void)
 	initImGui();
 	//Set clear color
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
+	//Setup gesture detection using OpenCV
+	gGestureDetection = std::make_shared<GestureDetection>();
+	gGestureDetection->visionApp2();
 	std::cout << "Setup done, entering program loop..." << std::endl;
 	while (!glfwWindowShouldClose(gWindow))
 	{

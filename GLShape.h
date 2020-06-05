@@ -2,8 +2,6 @@
 #include "Shape.h"
 #include "AdvancedShape.h"
 #include "Cuboid.h"
-#include "Prism.h"
-#include "Pyramid.h"
 #include "DrawGLUnit.h"
 #include "GLObject.h"
 

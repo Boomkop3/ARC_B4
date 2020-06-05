@@ -1,14 +1,14 @@
 #pragma once
 #include "Shape.h"
 
-#define A 0
-#define B 1
-#define C 2
-#define D 3
-#define E 4
-#define F 5
-#define G 6
-#define H 7
+#define CUBOID_A 0
+#define CUBOID_B 1
+#define CUBOID_C 2
+#define CUBOID_D 3
+#define CUBOID_E 4
+#define CUBOID_F 5
+#define CUBOID_G 6
+#define CUBOID_H 7
 
 class Cuboid : public Shape
 {

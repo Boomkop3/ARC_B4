@@ -12,9 +12,6 @@ public:
 		ABSTRACT,
 		CUBOID,
 		CYLINDER,
-		PRISM,
-		PYRAMID,
-		SPHERE, 
 		ADVANCED
 	} ShapeType;
 

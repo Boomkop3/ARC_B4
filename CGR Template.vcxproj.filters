@@ -99,16 +99,7 @@
     <ClCompile Include="Cylinder.cpp">
       <Filter>Source Files\engine\shapes</Filter>
     </ClCompile>
-    <ClCompile Include="Prism.cpp">
-      <Filter>Source Files\engine\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="Pyramid.cpp">
-      <Filter>Source Files\engine\shapes</Filter>
-    </ClCompile>
     <ClCompile Include="Shape.cpp">
-      <Filter>Source Files\engine\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="Sphere.cpp">
       <Filter>Source Files\engine\shapes</Filter>
     </ClCompile>
     <ClCompile Include="GLShape.cpp">
@@ -185,16 +176,7 @@
     <ClInclude Include="Cylinder.h">
       <Filter>Header Files\engine\shapes</Filter>
     </ClInclude>
-    <ClInclude Include="Prism.h">
-      <Filter>Header Files\engine\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="Pyramid.h">
-      <Filter>Header Files\engine\shapes</Filter>
-    </ClInclude>
     <ClInclude Include="Shape.h">
-      <Filter>Header Files\engine\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="Sphere.h">
       <Filter>Header Files\engine\shapes</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">

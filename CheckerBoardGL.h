@@ -8,8 +8,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "cuboid.h"
 #include "cylinder.h"
-#include "Pyramid.h"
-#include "Prism.h"
 #include "GLShape.h"
 #include "GLObject.h"
 #include "DecorationGLUnit.h"
