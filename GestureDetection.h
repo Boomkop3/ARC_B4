@@ -1,8 +1,9 @@
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core/core.hpp>		// Toevoegen van de OpenCV Core / basis functionaliteiten.
+#include <opencv2/highgui/highgui.hpp>	// Toevoegen van de OpenCV High Level GUI.
+#include <opencv/cv.h>					// Toevoegen van de cv.h header file.
+#include <opencv2/opencv.hpp>			// Toevoegen van de opencv.h header file.
 #include <iostream>
 #include <string>
-#include <opencv2/opencv.hpp>
 #include <thread>
 #include <mutex>
 
@@ -41,16 +42,7 @@ private:
 
 	Point2f fingerCoordinate;
 	bool fingerDetected = false;
-	enum FingerDirection
-	{
-		LeftDown,
-		LeftUp,
-		RightUp,
-		RightDown,
-		Center,
-		NotFound
-	};
-	FingerDirection direction;
+
 
 public:
 	int visionApp2();
@@ -61,5 +53,16 @@ public:
 	void blob_detection_init();
 	void updateUI();
 	void UpdateDirection();
+	typedef enum FingerDirection
+	{
+		LeftDown,
+		LeftUp,
+		RightUp,
+		RightDown,
+		Center,
+		NotFound
+	} FingerDirection;
+	FingerDirection direction;
+	GestureDetection::FingerDirection getDirection();
 };
 

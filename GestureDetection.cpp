@@ -274,4 +274,11 @@ void GestureDetection::UpdateDirection()
 	}
 }
 
+GestureDetection::FingerDirection GestureDetection::getDirection()
+{
+	GestureDetection::FingerDirection savedDir = this->direction;
+	direction = FingerDirection::NotFound;
+	return savedDir;
+}
+
 

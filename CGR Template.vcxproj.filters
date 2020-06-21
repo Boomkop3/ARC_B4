@@ -88,6 +88,12 @@
     <Filter Include="Source Files\utils\imgui">
       <UniqueIdentifier>{43318028-c4d8-470b-a36c-caa5b7570092}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\opencv">
+      <UniqueIdentifier>{f5772412-202b-4704-b01d-34de21c0e1a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opencv">
+      <UniqueIdentifier>{65283b0f-a233-48b5-bb96-513165f4b8d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -167,6 +173,9 @@
     </ClCompile>
     <ClCompile Include="LiftableGLUnit.cpp">
       <Filter>Source Files\engine\glunits\drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="GestureDetection.cpp">
+      <Filter>Source Files\opencv</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="LiftableGLUnit.h">
       <Filter>Header Files\engine\glunits\drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="GestureDetection.h">
+      <Filter>Header Files\opencv</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

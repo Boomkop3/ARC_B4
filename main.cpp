@@ -34,7 +34,7 @@
 #pragma comment(lib, "opengl32.lib")
 
 //Prototypes
-void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode);
+void glfw_onKey(GLFWwindow * window, int key, int scancode, int action, int mode);
 void update();
 void imGuiUpdate();
 void initImGui();
@@ -43,6 +43,8 @@ bool initOpenGL();
 bool init();
 void draw();
 void create_checkerboard();
+void handleOpenCVDirection(GestureDetection::FingerDirection direction);
+void refreshLoop();
 
 //ARC vars
 const char* APP_TITLE = "Augmented Reality Checkers";
@@ -60,6 +62,7 @@ std::shared_ptr<std::vector<glm::vec3>> gVertices_in = std::make_shared<std::vec
 std::shared_ptr<std::vector<glm::vec3>> gIndices_in = std::make_shared<std::vector<glm::vec3>>();;
 std::shared_ptr<CheckerBoardGL> gCheckerBoardGL;
 std::shared_ptr<GestureDetection> gGestureDetection;
+
 static void GLClearError()
 {
 	// Possibility for thread.yield?
@@ -87,8 +90,10 @@ int main(void)
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 	//Setup gesture detection using OpenCV
 	gGestureDetection = std::make_shared<GestureDetection>();
-	gGestureDetection->visionApp2();
+	std::thread gestureDetection(&GestureDetection::visionApp2, gGestureDetection);
+	//gGestureDetection->visionApp2();
 	std::cout << "Setup done, entering program loop..." << std::endl;
+	std::thread inputHandling(refreshLoop);
 	while (!glfwWindowShouldClose(gWindow))
 	{
 		update();
@@ -102,12 +107,19 @@ int main(void)
 	return 0;
 }
 
+void refreshLoop() {
+	while (1) {
+		handleOpenCVDirection(gGestureDetection->direction);
+		std::this_thread::sleep_for(chrono::milliseconds(3000));
+	}
+}
+
 bool vsync = true;
 void imGuiUpdate() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-	
+
 	glfwSwapInterval(vsync ? VSYNC_ON : VSYNC_OFF);
 
 	ImGui::Text("Dit is imgui! \n \nVia de GUI kun je vsync nu aan- of uitzetten. \n\nMvg, \n Dustin");
@@ -198,8 +210,8 @@ bool init()
 	int width, height, comp;
 
 	unsigned char* data = stbi_load(
-		"texture_map_checkers3.png", 
-		&width, &height, &comp, 
+		"texture_map_checkers3.png",
+		&width, &height, &comp,
 		STBI_rgb_alpha
 	);
 
@@ -214,6 +226,63 @@ bool init()
 
 
 	return true;
+}
+
+void handleOpenCVDirection(GestureDetection::FingerDirection direction) {
+	switch (direction) {
+	case GestureDetection::FingerDirection::Center: 
+		if (gCheckerBoardGL->getLiftedPiece()) {
+			std::shared_ptr<GLObject> lifted = gCheckerBoardGL->getLiftedPiece();
+			glm::vec3 movePos = gCheckerBoardGL->GetCoordinateFor(gCheckerBoardGL->selectedTile.x + 1, gCheckerBoardGL->selectedTile.y + 1);
+			lifted->liftableGLUnit->moveToXY(movePos.x, movePos.z);
+			lifted->liftableGLUnit->drop();
+		}
+		else
+			gCheckerBoardGL->selectPieceByHighlightedLocationAlternate();
+		break;
+	case GestureDetection::FingerDirection::LeftDown: 
+		if (gCamera->player1Cam) {
+			gCheckerBoardGL->selectLeft();
+			gCheckerBoardGL->selectDown();
+		}
+		else {
+			gCheckerBoardGL->selectRight();
+			gCheckerBoardGL->selectUp();
+		}
+		break;
+	case GestureDetection::FingerDirection::LeftUp:
+		if (gCamera->player1Cam) {
+			gCheckerBoardGL->selectLeft();
+			gCheckerBoardGL->selectUp();
+		}
+		else {
+			gCheckerBoardGL->selectRight();
+			gCheckerBoardGL->selectDown();
+		}
+		break;
+	case GestureDetection::FingerDirection::RightDown: 
+		if (gCamera->player1Cam) {
+			gCheckerBoardGL->selectRight();
+			gCheckerBoardGL->selectDown();
+		}
+		else {
+			gCheckerBoardGL->selectLeft();
+			gCheckerBoardGL->selectUp();
+		}
+		break;
+	case GestureDetection::FingerDirection::RightUp:
+		if (gCamera->player1Cam) {
+			gCheckerBoardGL->selectRight();
+			gCheckerBoardGL->selectUp();
+		}
+		else {
+			gCheckerBoardGL->selectLeft();
+			gCheckerBoardGL->selectDown();
+		}
+		break;
+	case GestureDetection::FingerDirection::NotFound: 
+		break;
+	}
 }
 
 void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode)
@@ -246,16 +315,17 @@ void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mode)
 		if (gCheckerBoardGL->getLiftedPiece()) {
 			std::shared_ptr<GLObject> lifted = gCheckerBoardGL->getLiftedPiece();
 			// if move is allowed -->
-			glm::vec3 movePos = gCheckerBoardGL->GetCoordinateFor(gCheckerBoardGL->selectedTile.x+1, gCheckerBoardGL->selectedTile.y+1);
+			glm::vec3 movePos = gCheckerBoardGL->GetCoordinateFor(gCheckerBoardGL->selectedTile.x + 1, gCheckerBoardGL->selectedTile.y + 1);
 			lifted->liftableGLUnit->moveToXY(movePos.x, movePos.z);
 			lifted->liftableGLUnit->drop();
-		} else 
-		gCheckerBoardGL->selectPieceByHighlightedLocationAlternate();
+		}
+		else
+			gCheckerBoardGL->selectPieceByHighlightedLocationAlternate();
 	}
 }
 
 static const double updatesPerSecond = 100.;
-static double timer = 1/updatesPerSecond;
+static double timer = 1 / updatesPerSecond;
 double lastFrameTime = .0;
 
 void update()
@@ -266,7 +336,7 @@ void update()
 
 	timer -= deltaTime;
 	if (timer <= 0) {
-		timer = 1./updatesPerSecond;
+		timer = 1. / updatesPerSecond;
 		gCamera->updateKeyInput(gWindow);
 		gCamera->checkTargetRadius();
 		gCamera->checkTargetRotation();
