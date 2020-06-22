@@ -214,8 +214,8 @@ void GestureDetection::create_gui_elements()
 
 	namedWindow("SLIDERS", WINDOW_NORMAL);
 	resizeWindow("SLIDERS", 640, 480);
-	createTrackbar("Hue high", "SLIDERS", &iHighHue, 179);
-	createTrackbar("Hue low", "SLIDERS", &iLowHue, 179);
+	createTrackbar("Hue high", "SLIDERS", &iHighHue, 255);
+	createTrackbar("Hue low", "SLIDERS", &iLowHue, 255);
 	createTrackbar("Saturation high", "SLIDERS", &iHighSat, 255);
 	createTrackbar("Saturation low", "SLIDERS", &iLowSat, 255);
 	createTrackbar("Value high", "SLIDERS", &iHighVal, 255);
@@ -260,8 +260,6 @@ void GestureDetection::UpdateDirection()
 			direction = Center;
 			fingerDetected = true;
 		}
-
-
 
 		if (fingerDetected == true)
 		{

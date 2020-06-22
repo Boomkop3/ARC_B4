@@ -122,10 +122,10 @@ void imGuiUpdate() {
 
 	glfwSwapInterval(vsync ? VSYNC_ON : VSYNC_OFF);
 
-	ImGui::Text("Dit is imgui! \n \nVia de GUI kun je vsync nu aan- of uitzetten. \n\nMvg, \n Dustin");
-	ImGui::Text("\n\nKnopjes!");
+	ImGui::Text("Welcome to ARC\nAugmented Reality Checkers\n");
+	ImGui::Text("\n\nSettings");
 	ImGui::Checkbox("Vsync", &vsync);
-	ImGui::Text("Applicatie gemiddelde %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::Text("Applicatie average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

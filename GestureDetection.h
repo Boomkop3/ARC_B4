@@ -15,13 +15,13 @@ using namespace std;
 class GestureDetection
 {
 private:
-	int iLowHue = 83;
-	int iLowSat = 103;
-	int iLowVal = 30;
+	int iLowHue = 111;
+	int iLowSat = 87;
+	int iLowVal = 100;
 
-	int iHighHue = 106;
-	int iHighSat = 225;
-	int iHighVal = 91;
+	int iHighHue = 124;
+	int iHighSat = 255;
+	int iHighVal = 255;
 
 	int iHue;
 	int iSat;
